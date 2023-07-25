@@ -25,6 +25,7 @@ const LOGIN_MUTATION = gql`
 `;
 
 export default function Login() {
+    const navigate = useNavigate();
     const {
         register,
         handleSubmit,
@@ -33,38 +34,42 @@ export default function Login() {
         setError,
         formState: { errors, isValid },
     } = useForm<ILoginForm>({ mode: 'onChange' });
-    const navigate = useNavigate();
 
-    const [loginMutation, { loading, data: loginMutationResult, error }] =
-        useMutation<LoginMutation, LoginMutationVariables>(LOGIN_MUTATION, {
-            onCompleted({ login: { ok, error, token } }) {
-                if (error) {
-                    switch (error) {
-                        case 'Not Found':
-                            setError('result', {
-                                type: 'validate',
-                                message: '사용자를 찾을 수 없습니다',
-                            });
-                            break;
-                    }
+    const [loginMutation, { loading }] = useMutation<
+        LoginMutation,
+        LoginMutationVariables
+    >(LOGIN_MUTATION, {
+        onCompleted({ login: { ok, error, token } }) {
+            if (error) {
+                switch (error) {
+                    case 'Not Found':
+                        setError('result', {
+                            type: 'validate',
+                            message: '사용자를 찾을 수 없습니다',
+                        });
+                        break;
                 }
+            }
 
-                if (ok && token) {
-                    isLoggedInVar(true);
-                    tokenVar(token);
-                    localStorage.setItem(TOKEN, token);
-                    navigate('/');
-                }
-            },
-            onError(error, clientOptions) {
-                console.log(error.graphQLErrors[0]);
-            },
-        });
+            if (ok && token) {
+                isLoggedInVar(true);
+                tokenVar(token);
+                localStorage.setItem(TOKEN, token);
+                navigate('/');
+                window.location.reload();
+            }
+        },
+        onError(error, clientOptions) {
+            console.log('Login error occured: ', error.graphQLErrors[0]);
+        },
+    });
 
     const onValid = () => {
         if (loading) return;
         const { email, password } = getValues();
-        loginMutation({ variables: { email, password } });
+        loginMutation({
+            variables: { email, password },
+        });
     };
 
     const clearResultError = () => {
