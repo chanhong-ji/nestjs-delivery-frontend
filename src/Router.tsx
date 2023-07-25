@@ -3,6 +3,7 @@ import Root from './pages/Root';
 import Login from './pages/Login';
 import CreateAccount from './pages/CreateAccount';
 import ErrorPage from './pages/error_page';
+import EditProfile from './pages/user/EditProfile';
 import ConfirmCode from './pages/user/ConfirmEmail';
 
 const router = createBrowserRouter([
@@ -16,6 +17,7 @@ const router = createBrowserRouter([
                 path: 'create-account',
                 element: <CreateAccount />,
             },
+            { path: 'profile', element: <EditProfile /> },
             { path: 'confirm-code', element: <ConfirmCode /> },
         ],
     },

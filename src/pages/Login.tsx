@@ -111,12 +111,17 @@ export default function Login() {
                         maxLength={30}
                     />
 
-                    {errors.email?.message && FormError(errors.email.message)}
+                    {errors.email?.message && (
+                        <FormError message={errors.email.message} />
+                    )}
 
-                    {errors.password?.message &&
-                        FormError(errors.password.message)}
+                    {errors.password?.message && (
+                        <FormError message={errors.password.message} />
+                    )}
 
-                    {errors.result?.message && FormError(errors.result.message)}
+                    {errors.result?.message && (
+                        <FormError message={errors.result.message} />
+                    )}
 
                     <AuthButton
                         text={'로그인'}

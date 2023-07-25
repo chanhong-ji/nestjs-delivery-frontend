@@ -60,7 +60,7 @@ export default function CreateAccount() {
                 }
             },
             onError(error) {
-                console.log(error.graphQLErrors[0]);
+                console.log('Create account Error: ', error.graphQLErrors[0]);
             },
         });
 
@@ -143,12 +143,17 @@ export default function CreateAccount() {
                         ))}
                     </select>
 
-                    {errors.email?.message && FormError(errors.email.message)}
+                    {errors.email?.message && (
+                        <FormError message={errors.email.message} />
+                    )}
 
-                    {errors.password?.message &&
-                        FormError(errors.password.message)}
+                    {errors.password?.message && (
+                        <FormError message={errors.password.message} />
+                    )}
 
-                    {errors.result?.message && FormError(errors.result.message)}
+                    {errors.result?.message && (
+                        <FormError message={errors.result.message} />
+                    )}
 
                     <AuthButton
                         text={'가입하기'}
