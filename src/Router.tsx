@@ -17,7 +17,7 @@ const router = createBrowserRouter([
                 path: 'create-account',
                 element: <CreateAccount />,
             },
-            { path: 'profile', element: <EditProfile /> },
+            { path: 'edit-profile', element: <EditProfile /> },
             { path: 'confirm-code', element: <ConfirmCode /> },
         ],
     },

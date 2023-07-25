@@ -1,4 +1,4 @@
-import { gql, useMutation } from '@apollo/client';
+import { gql, useMutation, useReactiveVar } from '@apollo/client';
 import { useForm } from 'react-hook-form';
 import { useMe } from '../../hooks/useMe';
 import { Helmet } from 'react-helmet-async';
@@ -8,6 +8,9 @@ import {
     EditProfileMutationVariables,
 } from '../../gql/graphql';
 import FormError from '../../components/FormError';
+import { isLoggedInVar } from '../../apollo';
+import { useEffect } from 'react';
+import { useNavigate, redirect } from 'react-router-dom';
 
 type IEditProfileForm = {
     email: string;
@@ -29,6 +32,8 @@ const EDIT_PROFILE_MUTATION = gql`
 `;
 
 export default function EditProfile() {
+    const isLoggedIn = useReactiveVar(isLoggedInVar);
+    const navigate = useNavigate();
     const { data: userData, refetch: userRefetch } = useMe();
     const [editProfile, { loading }] = useMutation<
         EditProfileMutation,
@@ -47,6 +52,11 @@ export default function EditProfile() {
             email: userData?.me.email ?? '',
         },
     });
+
+    useEffect(() => {
+        if (!isLoggedIn) navigate('/', { replace: true });
+    });
+
     const onValid = () => {
         const { email, password } = getValues();
         if ((!email || email === userData?.me.email) && !password) return;
@@ -184,7 +194,7 @@ export default function EditProfile() {
                     )}
 
                     <AuthButton
-                        text={'가입하기'}
+                        text={'확인'}
                         loading={loading}
                         isValid={isValid}
                     />
