@@ -7,6 +7,7 @@ import FormError from './../components/FormError';
 import AuthButton from '../components/AuthButton';
 import { isLoggedInVar, tokenVar } from '../apollo';
 import { TOKEN } from '../constants';
+import errorLog from '../errorLog';
 
 type ILoginForm = {
     email: string;
@@ -48,6 +49,13 @@ export default function Login() {
                             message: '사용자를 찾을 수 없습니다',
                         });
                         break;
+
+                    case 'Password Wrong':
+                        setError('result', {
+                            type: 'validate',
+                            message: '잘못된 비밀번호 입니다',
+                        });
+                        break;
                 }
             }
 
@@ -59,8 +67,8 @@ export default function Login() {
                 window.location.reload();
             }
         },
-        onError(error, clientOptions) {
-            console.log('Login error occured: ', error.graphQLErrors[0]);
+        onError(error) {
+            errorLog('login', error);
         },
     });
 

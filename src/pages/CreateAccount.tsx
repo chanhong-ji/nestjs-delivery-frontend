@@ -5,6 +5,7 @@ import { Helmet } from 'react-helmet-async';
 import { CreateAccountMutation, UserRole } from '../gql/graphql';
 import AuthButton from '../components/AuthButton';
 import FormError from '../components/FormError';
+import errorLog from '../errorLog';
 
 interface ICreateAccountForm {
     email: string;
@@ -60,7 +61,7 @@ export default function CreateAccount() {
                 }
             },
             onError(error) {
-                console.log('Create account Error: ', error.graphQLErrors[0]);
+                errorLog('createAccount', error);
             },
         });
 

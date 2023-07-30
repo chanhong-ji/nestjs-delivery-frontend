@@ -10,7 +10,8 @@ import {
 import FormError from '../../components/FormError';
 import { isLoggedInVar } from '../../apollo';
 import { useEffect } from 'react';
-import { useNavigate, redirect } from 'react-router-dom';
+import { useNavigate } from 'react-router-dom';
+import errorLog from '../../errorLog';
 
 type IEditProfileForm = {
     email: string;
@@ -85,7 +86,7 @@ export default function EditProfile() {
                 await userRefetch();
             },
             onError: (error) => {
-                console.log('Edit profile error:', error.graphQLErrors[0]);
+                errorLog('editProfile', error);
             },
         });
     };
