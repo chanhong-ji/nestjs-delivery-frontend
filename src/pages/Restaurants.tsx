@@ -1,4 +1,4 @@
-import RestaurantCompo from '../components/Restaurant';
+import RestaurantCompo from '../components/RestaurantCompo';
 
 interface IProps {
     restaurants: Array<{

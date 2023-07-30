@@ -461,6 +461,50 @@ export type CreateOrderItemInput = {
     dishId: Scalars['Int']['input'];
 };
 
+export type RestaurantFragmentFragment = {
+    __typename?: 'Restaurant';
+    id: number;
+    name: string;
+    address: string;
+    coverImage?: string | null;
+    category?: { __typename?: 'Category'; name: string; id: number } | null;
+};
+
+export type MeQueryVariables = Exact<{ [key: string]: never }>;
+
+export type MeQuery = {
+    __typename?: 'Query';
+    me: {
+        __typename?: 'User';
+        id: number;
+        email: string;
+        role: UserRole;
+        verified: boolean;
+    };
+};
+
+export type RestaurantsQueryVariables = Exact<{
+    categoryId: Scalars['Int']['input'];
+    page: Scalars['Int']['input'];
+}>;
+
+export type RestaurantsQuery = {
+    __typename?: 'Query';
+    restaurants: {
+        __typename?: 'RestaurantsOutput';
+        ok: boolean;
+        totalItems?: number | null;
+        totalPages?: number | null;
+        error?: string | null;
+        result?: Array<{
+            __typename?: 'Restaurant';
+            id: number;
+            name: string;
+            coverImage?: string | null;
+        }> | null;
+    };
+};
+
 export type CreateAccountMutationVariables = Exact<{
     email: Scalars['String']['input'];
     password: Scalars['String']['input'];
@@ -473,6 +517,23 @@ export type CreateAccountMutation = {
         __typename?: 'CreateAccountOutput';
         error?: string | null;
         ok: boolean;
+    };
+};
+
+export type SeeCategoriesQueryVariables = Exact<{ [key: string]: never }>;
+
+export type SeeCategoriesQuery = {
+    __typename?: 'Query';
+    seeCategories: {
+        __typename?: 'SeeCategoriesOutput';
+        ok: boolean;
+        error?: string | null;
+        categories?: Array<{
+            __typename?: 'Category';
+            id: number;
+            name: string;
+            restaurantCount: number;
+        }> | null;
     };
 };
 
@@ -491,6 +552,300 @@ export type LoginMutation = {
     };
 };
 
+export type RestaurantQueryVariables = Exact<{
+    restaurantId: Scalars['Int']['input'];
+}>;
+
+export type RestaurantQuery = {
+    __typename?: 'Query';
+    restaurant: {
+        __typename?: 'RestaurantOutput';
+        ok: boolean;
+        error?: string | null;
+        result?: {
+            __typename?: 'Restaurant';
+            id: number;
+            name: string;
+            coverImage?: string | null;
+            address: string;
+            category?: {
+                __typename?: 'Category';
+                id: number;
+                name: string;
+            } | null;
+            menu: Array<{
+                __typename?: 'Dish';
+                id: number;
+                name: string;
+                photo: string;
+                price: number;
+                description?: string | null;
+                dishOptions?: Array<{
+                    __typename?: 'DishOption';
+                    extra: number;
+                    name: string;
+                }> | null;
+            }>;
+        } | null;
+    };
+};
+
+export type SearchRestaurantQueryVariables = Exact<{
+    query: Scalars['String']['input'];
+    page: Scalars['Int']['input'];
+}>;
+
+export type SearchRestaurantQuery = {
+    __typename?: 'Query';
+    searchRestaurant: {
+        __typename?: 'SearchRestaurantOutput';
+        ok: boolean;
+        error?: string | null;
+        totalItems?: number | null;
+        totalPages?: number | null;
+        result?: Array<{
+            __typename?: 'Restaurant';
+            id: number;
+            name: string;
+            address: string;
+            coverImage?: string | null;
+            category?: {
+                __typename?: 'Category';
+                name: string;
+                id: number;
+            } | null;
+        }> | null;
+    };
+};
+
+export type VerifyEmailWithCodeMutationVariables = Exact<{
+    code: Scalars['String']['input'];
+}>;
+
+export type VerifyEmailWithCodeMutation = {
+    __typename?: 'Mutation';
+    verifyEmailwithCode: {
+        __typename?: 'VerifyCodeOutput';
+        error?: string | null;
+        ok: boolean;
+    };
+};
+
+export type EditProfileMutationVariables = Exact<{
+    email?: InputMaybe<Scalars['String']['input']>;
+    password?: InputMaybe<Scalars['String']['input']>;
+}>;
+
+export type EditProfileMutation = {
+    __typename?: 'Mutation';
+    editProfile: {
+        __typename?: 'EditProfileOutput';
+        error?: string | null;
+        ok: boolean;
+        user?: { __typename?: 'User'; email: string } | null;
+    };
+};
+
+export const RestaurantFragmentFragmentDoc = {
+    kind: 'Document',
+    definitions: [
+        {
+            kind: 'FragmentDefinition',
+            name: { kind: 'Name', value: 'RestaurantFragment' },
+            typeCondition: {
+                kind: 'NamedType',
+                name: { kind: 'Name', value: 'Restaurant' },
+            },
+            selectionSet: {
+                kind: 'SelectionSet',
+                selections: [
+                    { kind: 'Field', name: { kind: 'Name', value: 'id' } },
+                    { kind: 'Field', name: { kind: 'Name', value: 'name' } },
+                    { kind: 'Field', name: { kind: 'Name', value: 'address' } },
+                    {
+                        kind: 'Field',
+                        name: { kind: 'Name', value: 'coverImage' },
+                    },
+                    {
+                        kind: 'Field',
+                        name: { kind: 'Name', value: 'category' },
+                        selectionSet: {
+                            kind: 'SelectionSet',
+                            selections: [
+                                {
+                                    kind: 'Field',
+                                    name: { kind: 'Name', value: 'name' },
+                                },
+                                {
+                                    kind: 'Field',
+                                    name: { kind: 'Name', value: 'id' },
+                                },
+                            ],
+                        },
+                    },
+                ],
+            },
+        },
+    ],
+} as unknown as DocumentNode<RestaurantFragmentFragment, unknown>;
+export const MeDocument = {
+    kind: 'Document',
+    definitions: [
+        {
+            kind: 'OperationDefinition',
+            operation: 'query',
+            name: { kind: 'Name', value: 'me' },
+            selectionSet: {
+                kind: 'SelectionSet',
+                selections: [
+                    {
+                        kind: 'Field',
+                        name: { kind: 'Name', value: 'me' },
+                        selectionSet: {
+                            kind: 'SelectionSet',
+                            selections: [
+                                {
+                                    kind: 'Field',
+                                    name: { kind: 'Name', value: 'id' },
+                                },
+                                {
+                                    kind: 'Field',
+                                    name: { kind: 'Name', value: 'email' },
+                                },
+                                {
+                                    kind: 'Field',
+                                    name: { kind: 'Name', value: 'role' },
+                                },
+                                {
+                                    kind: 'Field',
+                                    name: { kind: 'Name', value: 'verified' },
+                                },
+                            ],
+                        },
+                    },
+                ],
+            },
+        },
+    ],
+} as unknown as DocumentNode<MeQuery, MeQueryVariables>;
+export const RestaurantsDocument = {
+    kind: 'Document',
+    definitions: [
+        {
+            kind: 'OperationDefinition',
+            operation: 'query',
+            name: { kind: 'Name', value: 'restaurants' },
+            variableDefinitions: [
+                {
+                    kind: 'VariableDefinition',
+                    variable: {
+                        kind: 'Variable',
+                        name: { kind: 'Name', value: 'categoryId' },
+                    },
+                    type: {
+                        kind: 'NonNullType',
+                        type: {
+                            kind: 'NamedType',
+                            name: { kind: 'Name', value: 'Int' },
+                        },
+                    },
+                },
+                {
+                    kind: 'VariableDefinition',
+                    variable: {
+                        kind: 'Variable',
+                        name: { kind: 'Name', value: 'page' },
+                    },
+                    type: {
+                        kind: 'NonNullType',
+                        type: {
+                            kind: 'NamedType',
+                            name: { kind: 'Name', value: 'Int' },
+                        },
+                    },
+                },
+            ],
+            selectionSet: {
+                kind: 'SelectionSet',
+                selections: [
+                    {
+                        kind: 'Field',
+                        name: { kind: 'Name', value: 'restaurants' },
+                        arguments: [
+                            {
+                                kind: 'Argument',
+                                name: { kind: 'Name', value: 'categoryId' },
+                                value: {
+                                    kind: 'Variable',
+                                    name: { kind: 'Name', value: 'categoryId' },
+                                },
+                            },
+                            {
+                                kind: 'Argument',
+                                name: { kind: 'Name', value: 'page' },
+                                value: {
+                                    kind: 'Variable',
+                                    name: { kind: 'Name', value: 'page' },
+                                },
+                            },
+                        ],
+                        selectionSet: {
+                            kind: 'SelectionSet',
+                            selections: [
+                                {
+                                    kind: 'Field',
+                                    name: { kind: 'Name', value: 'ok' },
+                                },
+                                {
+                                    kind: 'Field',
+                                    name: { kind: 'Name', value: 'result' },
+                                    selectionSet: {
+                                        kind: 'SelectionSet',
+                                        selections: [
+                                            {
+                                                kind: 'Field',
+                                                name: {
+                                                    kind: 'Name',
+                                                    value: 'id',
+                                                },
+                                            },
+                                            {
+                                                kind: 'Field',
+                                                name: {
+                                                    kind: 'Name',
+                                                    value: 'name',
+                                                },
+                                            },
+                                            {
+                                                kind: 'Field',
+                                                name: {
+                                                    kind: 'Name',
+                                                    value: 'coverImage',
+                                                },
+                                            },
+                                        ],
+                                    },
+                                },
+                                {
+                                    kind: 'Field',
+                                    name: { kind: 'Name', value: 'totalItems' },
+                                },
+                                {
+                                    kind: 'Field',
+                                    name: { kind: 'Name', value: 'totalPages' },
+                                },
+                                {
+                                    kind: 'Field',
+                                    name: { kind: 'Name', value: 'error' },
+                                },
+                            ],
+                        },
+                    },
+                ],
+            },
+        },
+    ],
+} as unknown as DocumentNode<RestaurantsQuery, RestaurantsQueryVariables>;
 export const CreateAccountDocument = {
     kind: 'Document',
     definitions: [
@@ -596,6 +951,68 @@ export const CreateAccountDocument = {
     CreateAccountMutation,
     CreateAccountMutationVariables
 >;
+export const SeeCategoriesDocument = {
+    kind: 'Document',
+    definitions: [
+        {
+            kind: 'OperationDefinition',
+            operation: 'query',
+            name: { kind: 'Name', value: 'seeCategories' },
+            selectionSet: {
+                kind: 'SelectionSet',
+                selections: [
+                    {
+                        kind: 'Field',
+                        name: { kind: 'Name', value: 'seeCategories' },
+                        selectionSet: {
+                            kind: 'SelectionSet',
+                            selections: [
+                                {
+                                    kind: 'Field',
+                                    name: { kind: 'Name', value: 'categories' },
+                                    selectionSet: {
+                                        kind: 'SelectionSet',
+                                        selections: [
+                                            {
+                                                kind: 'Field',
+                                                name: {
+                                                    kind: 'Name',
+                                                    value: 'id',
+                                                },
+                                            },
+                                            {
+                                                kind: 'Field',
+                                                name: {
+                                                    kind: 'Name',
+                                                    value: 'name',
+                                                },
+                                            },
+                                            {
+                                                kind: 'Field',
+                                                name: {
+                                                    kind: 'Name',
+                                                    value: 'restaurantCount',
+                                                },
+                                            },
+                                        ],
+                                    },
+                                },
+                                {
+                                    kind: 'Field',
+                                    name: { kind: 'Name', value: 'ok' },
+                                },
+                                {
+                                    kind: 'Field',
+                                    name: { kind: 'Name', value: 'error' },
+                                },
+                            ],
+                        },
+                    },
+                ],
+            },
+        },
+    ],
+} as unknown as DocumentNode<SeeCategoriesQuery, SeeCategoriesQueryVariables>;
 export const LoginDocument = {
     kind: 'Document',
     definitions: [
@@ -680,3 +1097,495 @@ export const LoginDocument = {
         },
     ],
 } as unknown as DocumentNode<LoginMutation, LoginMutationVariables>;
+export const RestaurantDocument = {
+    kind: 'Document',
+    definitions: [
+        {
+            kind: 'OperationDefinition',
+            operation: 'query',
+            name: { kind: 'Name', value: 'restaurant' },
+            variableDefinitions: [
+                {
+                    kind: 'VariableDefinition',
+                    variable: {
+                        kind: 'Variable',
+                        name: { kind: 'Name', value: 'restaurantId' },
+                    },
+                    type: {
+                        kind: 'NonNullType',
+                        type: {
+                            kind: 'NamedType',
+                            name: { kind: 'Name', value: 'Int' },
+                        },
+                    },
+                },
+            ],
+            selectionSet: {
+                kind: 'SelectionSet',
+                selections: [
+                    {
+                        kind: 'Field',
+                        name: { kind: 'Name', value: 'restaurant' },
+                        arguments: [
+                            {
+                                kind: 'Argument',
+                                name: { kind: 'Name', value: 'id' },
+                                value: {
+                                    kind: 'Variable',
+                                    name: {
+                                        kind: 'Name',
+                                        value: 'restaurantId',
+                                    },
+                                },
+                            },
+                        ],
+                        selectionSet: {
+                            kind: 'SelectionSet',
+                            selections: [
+                                {
+                                    kind: 'Field',
+                                    name: { kind: 'Name', value: 'ok' },
+                                },
+                                {
+                                    kind: 'Field',
+                                    name: { kind: 'Name', value: 'error' },
+                                },
+                                {
+                                    kind: 'Field',
+                                    name: { kind: 'Name', value: 'result' },
+                                    selectionSet: {
+                                        kind: 'SelectionSet',
+                                        selections: [
+                                            {
+                                                kind: 'Field',
+                                                name: {
+                                                    kind: 'Name',
+                                                    value: 'id',
+                                                },
+                                            },
+                                            {
+                                                kind: 'Field',
+                                                name: {
+                                                    kind: 'Name',
+                                                    value: 'name',
+                                                },
+                                            },
+                                            {
+                                                kind: 'Field',
+                                                name: {
+                                                    kind: 'Name',
+                                                    value: 'category',
+                                                },
+                                                selectionSet: {
+                                                    kind: 'SelectionSet',
+                                                    selections: [
+                                                        {
+                                                            kind: 'Field',
+                                                            name: {
+                                                                kind: 'Name',
+                                                                value: 'id',
+                                                            },
+                                                        },
+                                                        {
+                                                            kind: 'Field',
+                                                            name: {
+                                                                kind: 'Name',
+                                                                value: 'name',
+                                                            },
+                                                        },
+                                                    ],
+                                                },
+                                            },
+                                            {
+                                                kind: 'Field',
+                                                name: {
+                                                    kind: 'Name',
+                                                    value: 'coverImage',
+                                                },
+                                            },
+                                            {
+                                                kind: 'Field',
+                                                name: {
+                                                    kind: 'Name',
+                                                    value: 'address',
+                                                },
+                                            },
+                                            {
+                                                kind: 'Field',
+                                                name: {
+                                                    kind: 'Name',
+                                                    value: 'menu',
+                                                },
+                                                selectionSet: {
+                                                    kind: 'SelectionSet',
+                                                    selections: [
+                                                        {
+                                                            kind: 'Field',
+                                                            name: {
+                                                                kind: 'Name',
+                                                                value: 'id',
+                                                            },
+                                                        },
+                                                        {
+                                                            kind: 'Field',
+                                                            name: {
+                                                                kind: 'Name',
+                                                                value: 'name',
+                                                            },
+                                                        },
+                                                        {
+                                                            kind: 'Field',
+                                                            name: {
+                                                                kind: 'Name',
+                                                                value: 'photo',
+                                                            },
+                                                        },
+                                                        {
+                                                            kind: 'Field',
+                                                            name: {
+                                                                kind: 'Name',
+                                                                value: 'price',
+                                                            },
+                                                        },
+                                                        {
+                                                            kind: 'Field',
+                                                            name: {
+                                                                kind: 'Name',
+                                                                value: 'dishOptions',
+                                                            },
+                                                            selectionSet: {
+                                                                kind: 'SelectionSet',
+                                                                selections: [
+                                                                    {
+                                                                        kind: 'Field',
+                                                                        name: {
+                                                                            kind: 'Name',
+                                                                            value: 'extra',
+                                                                        },
+                                                                    },
+                                                                    {
+                                                                        kind: 'Field',
+                                                                        name: {
+                                                                            kind: 'Name',
+                                                                            value: 'name',
+                                                                        },
+                                                                    },
+                                                                ],
+                                                            },
+                                                        },
+                                                        {
+                                                            kind: 'Field',
+                                                            name: {
+                                                                kind: 'Name',
+                                                                value: 'description',
+                                                            },
+                                                        },
+                                                    ],
+                                                },
+                                            },
+                                        ],
+                                    },
+                                },
+                            ],
+                        },
+                    },
+                ],
+            },
+        },
+    ],
+} as unknown as DocumentNode<RestaurantQuery, RestaurantQueryVariables>;
+export const SearchRestaurantDocument = {
+    kind: 'Document',
+    definitions: [
+        {
+            kind: 'OperationDefinition',
+            operation: 'query',
+            name: { kind: 'Name', value: 'searchRestaurant' },
+            variableDefinitions: [
+                {
+                    kind: 'VariableDefinition',
+                    variable: {
+                        kind: 'Variable',
+                        name: { kind: 'Name', value: 'query' },
+                    },
+                    type: {
+                        kind: 'NonNullType',
+                        type: {
+                            kind: 'NamedType',
+                            name: { kind: 'Name', value: 'String' },
+                        },
+                    },
+                },
+                {
+                    kind: 'VariableDefinition',
+                    variable: {
+                        kind: 'Variable',
+                        name: { kind: 'Name', value: 'page' },
+                    },
+                    type: {
+                        kind: 'NonNullType',
+                        type: {
+                            kind: 'NamedType',
+                            name: { kind: 'Name', value: 'Int' },
+                        },
+                    },
+                },
+            ],
+            selectionSet: {
+                kind: 'SelectionSet',
+                selections: [
+                    {
+                        kind: 'Field',
+                        name: { kind: 'Name', value: 'searchRestaurant' },
+                        arguments: [
+                            {
+                                kind: 'Argument',
+                                name: { kind: 'Name', value: 'query' },
+                                value: {
+                                    kind: 'Variable',
+                                    name: { kind: 'Name', value: 'query' },
+                                },
+                            },
+                            {
+                                kind: 'Argument',
+                                name: { kind: 'Name', value: 'page' },
+                                value: {
+                                    kind: 'Variable',
+                                    name: { kind: 'Name', value: 'page' },
+                                },
+                            },
+                        ],
+                        selectionSet: {
+                            kind: 'SelectionSet',
+                            selections: [
+                                {
+                                    kind: 'Field',
+                                    name: { kind: 'Name', value: 'ok' },
+                                },
+                                {
+                                    kind: 'Field',
+                                    name: { kind: 'Name', value: 'error' },
+                                },
+                                {
+                                    kind: 'Field',
+                                    name: { kind: 'Name', value: 'totalItems' },
+                                },
+                                {
+                                    kind: 'Field',
+                                    name: { kind: 'Name', value: 'totalPages' },
+                                },
+                                {
+                                    kind: 'Field',
+                                    name: { kind: 'Name', value: 'result' },
+                                    selectionSet: {
+                                        kind: 'SelectionSet',
+                                        selections: [
+                                            {
+                                                kind: 'FragmentSpread',
+                                                name: {
+                                                    kind: 'Name',
+                                                    value: 'RestaurantFragment',
+                                                },
+                                            },
+                                        ],
+                                    },
+                                },
+                            ],
+                        },
+                    },
+                ],
+            },
+        },
+        {
+            kind: 'FragmentDefinition',
+            name: { kind: 'Name', value: 'RestaurantFragment' },
+            typeCondition: {
+                kind: 'NamedType',
+                name: { kind: 'Name', value: 'Restaurant' },
+            },
+            selectionSet: {
+                kind: 'SelectionSet',
+                selections: [
+                    { kind: 'Field', name: { kind: 'Name', value: 'id' } },
+                    { kind: 'Field', name: { kind: 'Name', value: 'name' } },
+                    { kind: 'Field', name: { kind: 'Name', value: 'address' } },
+                    {
+                        kind: 'Field',
+                        name: { kind: 'Name', value: 'coverImage' },
+                    },
+                    {
+                        kind: 'Field',
+                        name: { kind: 'Name', value: 'category' },
+                        selectionSet: {
+                            kind: 'SelectionSet',
+                            selections: [
+                                {
+                                    kind: 'Field',
+                                    name: { kind: 'Name', value: 'name' },
+                                },
+                                {
+                                    kind: 'Field',
+                                    name: { kind: 'Name', value: 'id' },
+                                },
+                            ],
+                        },
+                    },
+                ],
+            },
+        },
+    ],
+} as unknown as DocumentNode<
+    SearchRestaurantQuery,
+    SearchRestaurantQueryVariables
+>;
+export const VerifyEmailWithCodeDocument = {
+    kind: 'Document',
+    definitions: [
+        {
+            kind: 'OperationDefinition',
+            operation: 'mutation',
+            name: { kind: 'Name', value: 'verifyEmailWithCode' },
+            variableDefinitions: [
+                {
+                    kind: 'VariableDefinition',
+                    variable: {
+                        kind: 'Variable',
+                        name: { kind: 'Name', value: 'code' },
+                    },
+                    type: {
+                        kind: 'NonNullType',
+                        type: {
+                            kind: 'NamedType',
+                            name: { kind: 'Name', value: 'String' },
+                        },
+                    },
+                },
+            ],
+            selectionSet: {
+                kind: 'SelectionSet',
+                selections: [
+                    {
+                        kind: 'Field',
+                        name: { kind: 'Name', value: 'verifyEmailwithCode' },
+                        arguments: [
+                            {
+                                kind: 'Argument',
+                                name: { kind: 'Name', value: 'code' },
+                                value: {
+                                    kind: 'Variable',
+                                    name: { kind: 'Name', value: 'code' },
+                                },
+                            },
+                        ],
+                        selectionSet: {
+                            kind: 'SelectionSet',
+                            selections: [
+                                {
+                                    kind: 'Field',
+                                    name: { kind: 'Name', value: 'error' },
+                                },
+                                {
+                                    kind: 'Field',
+                                    name: { kind: 'Name', value: 'ok' },
+                                },
+                            ],
+                        },
+                    },
+                ],
+            },
+        },
+    ],
+} as unknown as DocumentNode<
+    VerifyEmailWithCodeMutation,
+    VerifyEmailWithCodeMutationVariables
+>;
+export const EditProfileDocument = {
+    kind: 'Document',
+    definitions: [
+        {
+            kind: 'OperationDefinition',
+            operation: 'mutation',
+            name: { kind: 'Name', value: 'editProfile' },
+            variableDefinitions: [
+                {
+                    kind: 'VariableDefinition',
+                    variable: {
+                        kind: 'Variable',
+                        name: { kind: 'Name', value: 'email' },
+                    },
+                    type: {
+                        kind: 'NamedType',
+                        name: { kind: 'Name', value: 'String' },
+                    },
+                },
+                {
+                    kind: 'VariableDefinition',
+                    variable: {
+                        kind: 'Variable',
+                        name: { kind: 'Name', value: 'password' },
+                    },
+                    type: {
+                        kind: 'NamedType',
+                        name: { kind: 'Name', value: 'String' },
+                    },
+                },
+            ],
+            selectionSet: {
+                kind: 'SelectionSet',
+                selections: [
+                    {
+                        kind: 'Field',
+                        name: { kind: 'Name', value: 'editProfile' },
+                        arguments: [
+                            {
+                                kind: 'Argument',
+                                name: { kind: 'Name', value: 'email' },
+                                value: {
+                                    kind: 'Variable',
+                                    name: { kind: 'Name', value: 'email' },
+                                },
+                            },
+                            {
+                                kind: 'Argument',
+                                name: { kind: 'Name', value: 'password' },
+                                value: {
+                                    kind: 'Variable',
+                                    name: { kind: 'Name', value: 'password' },
+                                },
+                            },
+                        ],
+                        selectionSet: {
+                            kind: 'SelectionSet',
+                            selections: [
+                                {
+                                    kind: 'Field',
+                                    name: { kind: 'Name', value: 'error' },
+                                },
+                                {
+                                    kind: 'Field',
+                                    name: { kind: 'Name', value: 'ok' },
+                                },
+                                {
+                                    kind: 'Field',
+                                    name: { kind: 'Name', value: 'user' },
+                                    selectionSet: {
+                                        kind: 'SelectionSet',
+                                        selections: [
+                                            {
+                                                kind: 'Field',
+                                                name: {
+                                                    kind: 'Name',
+                                                    value: 'email',
+                                                },
+                                            },
+                                        ],
+                                    },
+                                },
+                            ],
+                        },
+                    },
+                ],
+            },
+        },
+    ],
+} as unknown as DocumentNode<EditProfileMutation, EditProfileMutationVariables>;

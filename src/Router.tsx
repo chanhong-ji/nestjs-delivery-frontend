@@ -8,6 +8,7 @@ import ConfirmCode from './pages/user/ConfirmEmail';
 import Home from './pages/Home';
 import Search from './pages/Search';
 import Categories from './pages/Categories';
+import RestaurantPage from './pages/RestaurantPage';
 
 const router = createBrowserRouter([
     {
@@ -20,6 +21,8 @@ const router = createBrowserRouter([
                 element: <Home />,
                 children: [{ path: 'categories/:id', element: <Categories /> }],
             },
+            { path: 'restaurants/:id', element: <RestaurantPage /> },
+
             { path: 'login', element: <Login /> },
             {
                 path: 'create-account',
