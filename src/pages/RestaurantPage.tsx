@@ -1,4 +1,4 @@
-import { gql, useLazyQuery } from '@apollo/client';
+import { gql, useLazyQuery, useQuery } from '@apollo/client';
 import { useEffect } from 'react';
 import { useNavigate, useParams } from 'react-router-dom';
 import errorLog from '../errorLog';
@@ -32,27 +32,21 @@ const RESTAURANT_QUERY = gql`
 `;
 
 export default function RestaurantPage() {
-    const { id } = useParams();
+    const { id } = useParams() as { id: string };
     const navigate = useNavigate();
+    const { data } = useQuery<RestaurantQuery, RestaurantQueryVariables>(
+        RESTAURANT_QUERY,
 
-    const [getRestaurant, { data }] = useLazyQuery<
-        RestaurantQuery,
-        RestaurantQueryVariables
-    >(RESTAURANT_QUERY, {
-        onError(error) {
-            errorLog('retaurant', error);
-        },
-        onCompleted(data) {
-            if (!data.restaurant.ok) navigate('/', { replace: true });
-        },
-    });
-
-    useEffect(() => {
-        if (!id || isNaN(+id)) {
-            return navigate('/', { replace: true });
+        {
+            variables: { restaurantId: +id },
+            onError(error) {
+                errorLog('retaurant', error);
+            },
+            onCompleted(data) {
+                if (!data.restaurant.ok) navigate('/', { replace: true });
+            },
         }
-        getRestaurant({ variables: { restaurantId: +id } });
-    }, [id]);
+    );
 
     return (
         <div>

@@ -8,6 +8,7 @@ import AuthButton from '../components/AuthButton';
 import { isLoggedInVar, tokenVar } from '../apollo';
 import { TOKEN } from '../constants';
 import errorLog from '../errorLog';
+import { useMe } from '../hooks/useMe';
 
 type ILoginForm = {
     email: string;
@@ -27,6 +28,7 @@ const LOGIN_MUTATION = gql`
 
 export default function Login() {
     const navigate = useNavigate();
+    const { refetch: meRefetch } = useMe();
     const {
         register,
         handleSubmit,
@@ -40,7 +42,7 @@ export default function Login() {
         LoginMutation,
         LoginMutationVariables
     >(LOGIN_MUTATION, {
-        onCompleted({ login: { ok, error, token } }) {
+        async onCompleted({ login: { ok, error, token } }) {
             if (error) {
                 switch (error) {
                     case 'Not Found':
@@ -50,7 +52,7 @@ export default function Login() {
                         });
                         break;
 
-                    case 'Password Wrong':
+                    case 'Passwasord Wrong':
                         setError('result', {
                             type: 'validate',
                             message: '잘못된 비밀번호 입니다',
@@ -60,11 +62,11 @@ export default function Login() {
             }
 
             if (ok && token) {
+                localStorage.setItem(TOKEN, token);
                 isLoggedInVar(true);
                 tokenVar(token);
-                localStorage.setItem(TOKEN, token);
+                await meRefetch();
                 navigate('/');
-                window.location.reload();
             }
         },
         onError(error) {

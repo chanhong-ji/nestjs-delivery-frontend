@@ -1,4 +1,4 @@
-import { createBrowserRouter } from 'react-router-dom';
+import { createBrowserRouter, redirect } from 'react-router-dom';
 import Root from './pages/Root';
 import Login from './pages/Login';
 import CreateAccount from './pages/CreateAccount';
@@ -9,6 +9,23 @@ import Home from './pages/Home';
 import Search from './pages/Search';
 import Categories from './pages/Categories';
 import RestaurantPage from './pages/RestaurantPage';
+import { isLoggedInVar } from './apollo';
+
+const publicRoutes = [
+    {
+        element: <Login />,
+        path: 'login',
+    },
+    {
+        element: <CreateAccount />,
+        path: 'create-account',
+    },
+];
+
+const privateRoutes = [
+    { element: <EditProfile />, path: 'edit-profile' },
+    { element: <ConfirmCode />, path: 'confirm-code' },
+];
 
 const router = createBrowserRouter([
     {
@@ -19,18 +36,27 @@ const router = createBrowserRouter([
             {
                 path: '',
                 element: <Home />,
-                children: [{ path: 'categories/:id', element: <Categories /> }],
+                children: [
+                    {
+                        element: <Categories />,
+                        path: 'categories/:id',
+                        loader: ({ params: { id } }) => {
+                            if (id && isNaN(+id)) return redirect('/');
+                            return null;
+                        },
+                    },
+                ],
             },
-            { path: 'restaurants/:id', element: <RestaurantPage /> },
-
-            { path: 'login', element: <Login /> },
             {
-                path: 'create-account',
-                element: <CreateAccount />,
+                element: <RestaurantPage />,
+                path: 'restaurants/:id',
+                loader: ({ params: { id } }) => {
+                    if (id && isNaN(+id)) return redirect('/');
+                    return null;
+                },
             },
-            { path: 'edit-profile', element: <EditProfile /> },
-            { path: 'confirm-code', element: <ConfirmCode /> },
-            { path: 'search', element: <Search /> },
+            { element: <Search />, path: 'search' },
+            ...(isLoggedInVar() ? privateRoutes : publicRoutes),
         ],
     },
 ]);

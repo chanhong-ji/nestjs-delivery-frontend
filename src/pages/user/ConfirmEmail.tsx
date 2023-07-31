@@ -1,4 +1,4 @@
-import { gql, useMutation, useReactiveVar } from '@apollo/client';
+import { gql, useMutation } from '@apollo/client';
 import { useEffect } from 'react';
 import { useNavigate, useSearchParams } from 'react-router-dom';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
@@ -8,7 +8,6 @@ import {
     VerifyEmailWithCodeMutationVariables,
 } from '../../gql/graphql';
 import { useMe } from '../../hooks/useMe';
-import { isLoggedInVar } from '../../apollo';
 
 const VERIFY_EMAIL_MUTATION = gql`
     mutation verifyEmailWithCode($code: String!) {
@@ -24,8 +23,6 @@ export default function ConfirmCode() {
     const navigate = useNavigate();
     const { refetch: userRefetch } = useMe();
 
-    const isLoggedIn = useReactiveVar(isLoggedInVar);
-
     const redirectHome = () => {
         navigate('/', { replace: true });
     };
@@ -38,7 +35,7 @@ export default function ConfirmCode() {
     useEffect(() => {
         const code = searchParams.get('code');
 
-        if (!code || !isLoggedIn) {
+        if (!code) {
             redirectHome();
             return;
         }
