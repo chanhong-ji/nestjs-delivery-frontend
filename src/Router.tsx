@@ -1,4 +1,5 @@
 import { createBrowserRouter, redirect } from 'react-router-dom';
+import { isLoggedInVar } from './apollo';
 import Root from './pages/Root';
 import Login from './pages/Login';
 import CreateAccount from './pages/CreateAccount';
@@ -9,7 +10,8 @@ import Home from './pages/Home';
 import Search from './pages/Search';
 import Categories from './pages/Categories';
 import RestaurantPage from './pages/RestaurantPage';
-import { isLoggedInVar } from './apollo';
+import MyRestaurants from './pages/owner/MyRestaurants';
+import Owner from './pages/owner/Owner';
 
 const publicRoutes = [
     {
@@ -25,6 +27,16 @@ const publicRoutes = [
 const privateRoutes = [
     { element: <EditProfile />, path: 'edit-profile' },
     { element: <ConfirmCode />, path: 'confirm-code' },
+    {
+        element: <Owner />,
+        path: 'owner',
+        children: [
+            {
+                element: <MyRestaurants />,
+                path: '',
+            },
+        ],
+    },
 ];
 
 const router = createBrowserRouter([
