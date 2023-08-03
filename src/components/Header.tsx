@@ -2,8 +2,7 @@ import { Link, useNavigate } from 'react-router-dom';
 import { useForm } from 'react-hook-form';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faSearch } from '@fortawesome/free-solid-svg-icons';
-import { TOKEN } from '../constants';
-import { isLoggedInVar } from '../apollo';
+import { userLogout } from '../apollo';
 
 interface IProps {
     userId: number | undefined;
@@ -58,8 +57,7 @@ export default function Header({ userId }: IProps) {
                             </Link>
                             <span
                                 onClick={() => {
-                                    localStorage.removeItem(TOKEN);
-                                    isLoggedInVar(false);
+                                    userLogout();
                                     navigate(0);
                                 }}
                                 className='header-btn hover:cursor-pointer'

@@ -4,9 +4,8 @@ import { Link, useNavigate } from 'react-router-dom';
 import { Helmet } from 'react-helmet-async';
 import { LoginMutation, LoginMutationVariables } from '../gql/graphql';
 import FormError from './../components/FormError';
-import AuthButton from '../components/AuthButton';
-import { isLoggedInVar, tokenVar } from '../apollo';
-import { TOKEN } from '../constants';
+import FormButton from '../components/FormButton';
+import { userLogin } from '../apollo';
 import errorLog from '../errorLog';
 import { useMe } from '../hooks/useMe';
 
@@ -28,7 +27,6 @@ const LOGIN_MUTATION = gql`
 
 export default function Login() {
     const navigate = useNavigate();
-    const { refetch: meRefetch } = useMe();
     const {
         register,
         handleSubmit,
@@ -62,11 +60,9 @@ export default function Login() {
             }
 
             if (ok && token) {
-                localStorage.setItem(TOKEN, token);
-                isLoggedInVar(true);
-                tokenVar(token);
-                await meRefetch();
+                userLogin(token);
                 navigate('/');
+                window.location.reload();
             }
         },
         onError(error) {
@@ -133,7 +129,7 @@ export default function Login() {
                         <FormError message={errors.result.message} />
                     )}
 
-                    <AuthButton
+                    <FormButton
                         text={'로그인'}
                         loading={loading}
                         isValid={isValid}

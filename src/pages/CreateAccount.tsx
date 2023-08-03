@@ -3,7 +3,7 @@ import { Link, useNavigate } from 'react-router-dom';
 import { useForm } from 'react-hook-form';
 import { Helmet } from 'react-helmet-async';
 import { CreateAccountMutation, UserRole } from '../gql/graphql';
-import AuthButton from '../components/AuthButton';
+import FormButton from '../components/FormButton';
 import FormError from '../components/FormError';
 import errorLog from '../errorLog';
 
@@ -80,7 +80,7 @@ export default function CreateAccount() {
             <Helmet>
                 <title>Create Account | Delivery</title>
             </Helmet>
-            <div className='bg-white max-w-lg w-full rounded-lg pt-10 pb-4 mt-10'>
+            <div className='max-w-lg w-full rounded-lg pt-10 pb-4 mt-10'>
                 <h3 className='text-2xl text-center font-semibold'>회원가입</h3>
                 <form
                     onSubmit={handleSubmit(onValid)}
@@ -156,7 +156,7 @@ export default function CreateAccount() {
                         <FormError message={errors.result.message} />
                     )}
 
-                    <AuthButton
+                    <FormButton
                         text={'가입하기'}
                         loading={loading}
                         isValid={isValid}

@@ -1,5 +1,6 @@
-import { gql, useQuery } from '@apollo/client';
+import { gql, useQuery, useReactiveVar } from '@apollo/client';
 import { MeQuery } from '../gql/graphql';
+import { isLoggedInVar, userLogout } from '../apollo';
 
 export const ME_QUERY = gql`
     query me {
@@ -13,5 +14,14 @@ export const ME_QUERY = gql`
 `;
 
 export const useMe = () => {
-    return useQuery<MeQuery>(ME_QUERY);
+    const isLoggedIn = useReactiveVar(isLoggedInVar);
+
+    return useQuery<MeQuery>(ME_QUERY, {
+        onCompleted(data) {},
+        onError(error) {
+            if (isLoggedIn) {
+                userLogout();
+            }
+        },
+    });
 };

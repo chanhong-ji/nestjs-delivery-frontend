@@ -4,7 +4,7 @@ interface IProps {
     isValid: boolean;
 }
 
-export default function AuthButton({ loading, text, isValid }: IProps) {
+export default function FormButton({ loading, text, isValid }: IProps) {
     return (
         <button
             type='submit'

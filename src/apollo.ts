@@ -12,6 +12,18 @@ const token = localStorage.getItem(TOKEN);
 export const isLoggedInVar = makeVar(Boolean(token));
 export const tokenVar = makeVar(token);
 
+export const userLogout = () => {
+    localStorage.removeItem(TOKEN);
+    isLoggedInVar(false);
+    tokenVar(null);
+};
+
+export const userLogin = (token: string) => {
+    localStorage.setItem(TOKEN, token);
+    isLoggedInVar(true);
+    tokenVar(token);
+};
+
 const httpLink = createHttpLink({
     uri: variables.db.url,
     credentials: 'same-origin',
