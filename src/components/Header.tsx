@@ -52,6 +52,9 @@ export default function Header({ userId }: IProps) {
                 <div className='flex items-center'>
                     {userId ? (
                         <>
+                            <Link to='/owner'>
+                                <h5 className='header-btn mr-5'>Owner</h5>
+                            </Link>
                             <Link to='/edit-profile'>
                                 <h5 className='header-btn mr-5'>My page</h5>
                             </Link>

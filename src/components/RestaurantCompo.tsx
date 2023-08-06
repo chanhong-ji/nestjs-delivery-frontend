@@ -1,14 +1,21 @@
 import { Link } from 'react-router-dom';
+import { UserRole } from '../gql/graphql';
 
 interface IProps {
     id: number;
     name: string;
     coverImage: string | null | undefined;
+    role?: UserRole;
 }
 
-export default function RestaurantCompo({ id, name, coverImage }: IProps) {
+export default function RestaurantCompo({
+    id,
+    name,
+    coverImage,
+    role,
+}: IProps) {
     return (
-        <Link to={`/restaurants/${id}`}>
+        <Link to={`${role ? '/' + role.toLowerCase() : ''}/restaurants/${id}`}>
             <div className='w-full h-56 grid grid-rows-3 hover:cursor-pointer'>
                 <div
                     style={{

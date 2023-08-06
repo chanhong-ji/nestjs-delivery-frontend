@@ -1,4 +1,8 @@
-import { createBrowserRouter, redirect } from 'react-router-dom';
+import {
+    LoaderFunctionArgs,
+    createBrowserRouter,
+    redirect,
+} from 'react-router-dom';
 import { isLoggedInVar } from './apollo';
 import Root from './pages/Root';
 import Login from './pages/Login';
@@ -11,7 +15,10 @@ import Search from './pages/Search';
 import Categories from './pages/Categories';
 import RestaurantPage from './pages/RestaurantPage';
 import MyRestaurants from './pages/owner/MyRestaurants';
+import CreateRestaurant from './pages/owner/CreateRestaurant';
 import Owner from './pages/owner/Owner';
+import MyRestaurant from './pages/owner/MyRestaurant';
+import AddDish from './pages/owner/AddDish';
 
 const publicRoutes = [
     {
@@ -34,6 +41,26 @@ const privateRoutes = [
             {
                 element: <MyRestaurants />,
                 path: '',
+            },
+            {
+                element: <CreateRestaurant />,
+                path: 'create-restaurant',
+            },
+            {
+                element: <MyRestaurant />,
+                path: 'restaurants/:id',
+                loader: ({ params: { id } }: LoaderFunctionArgs) => {
+                    if (id && isNaN(+id)) return redirect('/');
+                    return null;
+                },
+            },
+            {
+                element: <AddDish />,
+                path: 'restaurants/:id/add-dish',
+                loader: ({ params: { id } }: LoaderFunctionArgs) => {
+                    if (id && isNaN(+id)) return redirect('/');
+                    return null;
+                },
             },
         ],
     },

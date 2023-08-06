@@ -7,7 +7,6 @@ import FormError from './../components/FormError';
 import FormButton from '../components/FormButton';
 import { userLogin } from '../apollo';
 import errorLog from '../errorLog';
-import { useMe } from '../hooks/useMe';
 
 type ILoginForm = {
     email: string;

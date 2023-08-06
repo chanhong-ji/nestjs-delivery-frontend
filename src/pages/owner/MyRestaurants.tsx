@@ -9,6 +9,7 @@ import errorLog from '../../errorLog';
 import { useMe } from '../../hooks/useMe';
 import { useEffect } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
+import Restaurants from '../Restaurants';
 
 const MY_RESTAURANTS_QUERY = gql`
     ${RESTAURANT_FRAGMENT}
@@ -32,9 +33,6 @@ export default function MyRestaurants() {
     >(MY_RESTAURANTS_QUERY, {
         onError: (error) => {
             errorLog('myRestaurants', error);
-        },
-        onCompleted(data) {
-            console.log(data);
         },
     });
 
@@ -60,7 +58,11 @@ export default function MyRestaurants() {
                     </Link>
                 </>
             ) : (
-                <></>
+                <Restaurants
+                    loading={loading}
+                    restaurants={data?.myRestaurants.result ?? []}
+                    role={UserRole.Owner}
+                />
             )}
         </div>
     );

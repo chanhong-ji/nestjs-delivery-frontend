@@ -21,6 +21,7 @@ export const useMe = () => {
         onError(error) {
             if (isLoggedIn) {
                 userLogout();
+                window.location.reload();
             }
         },
     });

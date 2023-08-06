@@ -8,6 +8,7 @@ function required(key: string, defaultValue: any = undefined) {
 
 const variables = {
     db: {
+        uploadUrl: required('REACT_APP_UPLOAD_URL'),
         url: required('REACT_APP_DB_URL'),
     },
 };

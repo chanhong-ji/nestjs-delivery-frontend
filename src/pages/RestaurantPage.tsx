@@ -4,6 +4,8 @@ import { useNavigate, useParams } from 'react-router-dom';
 import errorLog from '../errorLog';
 import { RestaurantQuery, RestaurantQueryVariables } from '../gql/graphql';
 import { Helmet } from 'react-helmet-async';
+import RestaurantBanner from '../components/RestaurantBanner';
+import Dish from '../components/Dish';
 
 const RESTAURANT_QUERY = gql`
     query restaurant($restaurantId: Int!) {
@@ -55,20 +57,20 @@ export default function RestaurantPage() {
                     {data?.restaurant.result?.name || ''} | Nuber Eats
                 </title>
             </Helmet>
-            <div
-                className=' bg-gray-800 bg-center bg-cover py-48'
-                style={{
-                    backgroundImage: `url(${data?.restaurant.result?.coverImage})`,
-                }}
-            >
-                <div className='bg-white py-8 pl-48 pr-7 w-fit max-w-lg'>
-                    <h4 className='text-4xl mb-3 w-fit'>
-                        {data?.restaurant.result?.name}
-                    </h4>
-                    <h6 className='text-sm font-light w-fit'>
-                        {data?.restaurant.result?.address}
-                    </h6>
-                </div>
+            <RestaurantBanner
+                coverImage={data?.restaurant.result?.coverImage ?? ''}
+                name={data?.restaurant.result?.name ?? 'loading...'}
+                address={data?.restaurant.result?.address ?? 'loading...'}
+            />
+            <div className='grid mt-16 md:grid-cols-3 gap-x-5 gap-y-10 mx-5'>
+                {data?.restaurant.result?.menu.map((dish, idx) => (
+                    <Dish
+                        name={dish.name}
+                        price={dish.price}
+                        description={dish.description}
+                        key={idx}
+                    />
+                ))}
             </div>
         </div>
     );
