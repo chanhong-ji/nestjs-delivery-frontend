@@ -79,10 +79,13 @@ export default function MyRestaurant() {
             <div className='grid mt-16 md:grid-cols-3 gap-x-5 gap-y-10 mx-5'>
                 {data?.myRestaurant.result?.menu.map((dish, idx) => (
                     <Dish
+                        id={dish.id}
                         name={dish.name}
                         price={dish.price}
                         description={dish.description}
                         key={idx}
+                        addItemToCart={() => {}}
+                        options={[]}
                     />
                 ))}
             </div>
