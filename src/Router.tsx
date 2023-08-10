@@ -8,8 +8,8 @@ import Root from './pages/Root';
 import Login from './pages/Login';
 import CreateAccount from './pages/CreateAccount';
 import ErrorPage from './pages/error_page';
-import EditProfile from './pages/user/EditProfile';
-import ConfirmCode from './pages/user/ConfirmEmail';
+import EditProfile from './pages/EditProfile';
+import ConfirmCode from './pages/ConfirmEmail';
 import Home from './pages/Home';
 import Search from './pages/Search';
 import Categories from './pages/Categories';
@@ -19,6 +19,7 @@ import CreateRestaurant from './pages/owner/CreateRestaurant';
 import Owner from './pages/owner/Owner';
 import MyRestaurant from './pages/owner/MyRestaurant';
 import AddDish from './pages/owner/AddDish';
+import MyPage from './pages/MyPage';
 
 const publicRoutes = [
     {
@@ -32,7 +33,11 @@ const publicRoutes = [
 ];
 
 const privateRoutes = [
-    { element: <EditProfile />, path: 'edit-profile' },
+    {
+        element: <MyPage />,
+        path: 'my-page',
+    },
+    { element: <EditProfile />, path: 'my-page/edit-profile' },
     { element: <ConfirmCode />, path: 'confirm-code' },
     {
         element: <Owner />,

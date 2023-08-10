@@ -9,7 +9,7 @@ export default function Root() {
     return (
         <div className='h-screen w-screen flex flex-col'>
             {userData?.me && !userData.me.verified && <VerifyAlert />}
-            <Header userId={userData?.me.id} />
+            <Header userId={userData?.me.id} role={userData?.me.role} />
             <Outlet />
         </div>
     );

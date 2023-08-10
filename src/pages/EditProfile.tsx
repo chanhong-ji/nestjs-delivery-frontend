@@ -1,14 +1,14 @@
 import { gql, useMutation } from '@apollo/client';
 import { useForm } from 'react-hook-form';
 import { Helmet } from 'react-helmet-async';
-import { useMe } from '../../hooks/useMe';
-import FormButton from '../../components/FormButton';
-import FormError from '../../components/FormError';
-import errorLog from '../../errorLog';
+import { useMe } from '../hooks/useMe';
+import FormButton from '../components/FormButton';
+import FormError from '../components/FormError';
+import errorLog from '../errorLog';
 import {
     EditProfileMutation,
     EditProfileMutationVariables,
-} from '../../gql/graphql';
+} from '../gql/graphql';
 
 type IEditProfileForm = {
     email: string;

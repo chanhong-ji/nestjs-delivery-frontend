@@ -3,16 +3,18 @@ import { useForm } from 'react-hook-form';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faSearch } from '@fortawesome/free-solid-svg-icons';
 import { userLogout } from '../apollo';
+import { UserRole } from '../gql/graphql';
 
 interface IProps {
     userId: number | undefined;
+    role?: UserRole;
 }
 
 interface ISearchForm {
     keyword: string;
 }
 
-export default function Header({ userId }: IProps) {
+export default function Header({ userId, role }: IProps) {
     const navigate = useNavigate();
 
     const { register, handleSubmit, getValues } = useForm<ISearchForm>();
@@ -52,10 +54,12 @@ export default function Header({ userId }: IProps) {
                 <div className='flex items-center'>
                     {userId ? (
                         <>
-                            <Link to='/owner'>
-                                <h5 className='header-btn mr-5'>Owner</h5>
-                            </Link>
-                            <Link to='/edit-profile'>
+                            {role === UserRole.Owner && (
+                                <Link to='/owner'>
+                                    <h5 className='header-btn mr-5'>Owner</h5>
+                                </Link>
+                            )}
+                            <Link to='/my-page'>
                                 <h5 className='header-btn mr-5'>My page</h5>
                             </Link>
                             <span

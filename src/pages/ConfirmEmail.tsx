@@ -6,8 +6,8 @@ import { faArrowRight } from '@fortawesome/free-solid-svg-icons';
 import {
     VerifyEmailWithCodeMutation,
     VerifyEmailWithCodeMutationVariables,
-} from '../../gql/graphql';
-import { useMe } from '../../hooks/useMe';
+} from '../gql/graphql';
+import { useMe } from '../hooks/useMe';
 
 const VERIFY_EMAIL_MUTATION = gql`
     mutation verifyEmailWithCode($code: String!) {
