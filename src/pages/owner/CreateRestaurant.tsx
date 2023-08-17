@@ -42,6 +42,7 @@ const CREATE_RESTAURANT = gql`
         ) {
             ok
             error
+            restaurantId
         }
     }
 `;
@@ -106,7 +107,9 @@ export default function CreateRestaurant() {
                     categoryId: +categoryId,
                     coverImage: file,
                 },
-                onCompleted: ({ createRestaurant: { ok, error } }) => {
+                onCompleted: ({
+                    createRestaurant: { ok, error, restaurantId },
+                }) => {
                     setUploading(false);
 
                     if (!ok) {
@@ -127,7 +130,7 @@ export default function CreateRestaurant() {
                         }
                     }
 
-                    navigate('/owner');
+                    navigate(`/owner/restaurants/${restaurantId}`);
                 },
                 onError(error) {
                     errorLog('createRestaurant', error);

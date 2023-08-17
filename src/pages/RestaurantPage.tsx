@@ -1,7 +1,6 @@
 import { gql, useMutation, useQuery } from '@apollo/client';
 import { useNavigate, useParams } from 'react-router-dom';
 import { FieldArrayWithId, useFieldArray, useForm } from 'react-hook-form';
-import { Helmet } from 'react-helmet-async';
 import { DISH_FRAGMENT, RESTAURANT_FRAGMENT } from '../fragments';
 import errorLog from '../errorLog';
 import { useMe } from '../hooks/useMe';
@@ -45,6 +44,7 @@ const CREATE_ORDER_MUTATION = gql`
         ) {
             error
             ok
+            orderId
         }
     }
 `;
@@ -114,7 +114,7 @@ export default function RestaurantPage() {
                 items,
             },
             onCompleted(data) {
-                navigate('/my-page');
+                navigate(`/orders/${data.createOrder.orderId}`);
             },
         });
     };
@@ -173,13 +173,14 @@ export default function RestaurantPage() {
                     <div className='col-span-3 grid grid-cols-1 md:grid-cols-2 xl:grid-cols-3 mt-16 gap-x-5 gap-y-10 xl:pr-5'>
                         {data.restaurant.result.menu.map((dish, idx) => (
                             <Dish
-                                addItemToCart={addItemToCart}
+                                onClickButton={addItemToCart}
                                 id={dish.id}
                                 name={dish.name}
                                 price={dish.price}
                                 description={dish.description}
                                 key={idx}
                                 options={dish.dishOptions ?? []}
+                                buttonTitle='추가'
                             />
                         ))}
                     </div>

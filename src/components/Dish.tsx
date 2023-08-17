@@ -2,13 +2,16 @@ import { useState } from 'react';
 import { DishOption } from '../gql/graphql';
 import DishOptionCompo from './DishOption';
 
+type ButtonTitle = '추가' | '편집';
+
 interface IProps {
     id: number;
     description?: string | null;
     name: string;
     price: number;
     options: Array<DishOption>;
-    addItemToCart: (dishId: number, choices?: string[]) => void;
+    onClickButton: (dishId: number, choices?: string[]) => void;
+    buttonTitle: ButtonTitle;
 }
 
 export default function Dish({
@@ -17,7 +20,8 @@ export default function Dish({
     name,
     price,
     options,
-    addItemToCart,
+    onClickButton,
+    buttonTitle,
 }: IProps) {
     const [optionSelect, setOptionSelect] = useState(
         Array(options.length).fill(false)
@@ -34,7 +38,7 @@ export default function Dish({
             .filter((_, idx) => optionSelect[idx])
             .map((option) => option.name);
 
-        addItemToCart(id, selectedOptions);
+        onClickButton(id, selectedOptions);
         setOptionSelect((prev) => Array(prev.length).fill(false));
     };
 
@@ -47,7 +51,7 @@ export default function Dish({
                         className='button px-2 py-1'
                         onClick={onClickAddBtn}
                     >
-                        추가
+                        {buttonTitle}
                     </button>
                 </div>
                 <h4 className='font-medium'>{description}</h4>

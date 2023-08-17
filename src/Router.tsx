@@ -20,6 +20,7 @@ import Owner from './pages/owner/Owner';
 import MyRestaurant from './pages/owner/MyRestaurant';
 import AddDish from './pages/owner/AddDish';
 import MyPage from './pages/MyPage';
+import Order from './components/Order';
 
 const publicRoutes = [
     {
@@ -38,6 +39,10 @@ const privateRoutes = [
         path: 'my-page',
     },
     { element: <EditProfile />, path: 'my-page/edit-profile' },
+    {
+        element: <CreateRestaurant />,
+        path: 'my-page/create-restaurant',
+    },
     { element: <ConfirmCode />, path: 'confirm-code' },
     {
         element: <Owner />,
@@ -46,10 +51,6 @@ const privateRoutes = [
             {
                 element: <MyRestaurants />,
                 path: '',
-            },
-            {
-                element: <CreateRestaurant />,
-                path: 'create-restaurant',
             },
             {
                 element: <MyRestaurant />,
@@ -68,6 +69,14 @@ const privateRoutes = [
                 },
             },
         ],
+    },
+    {
+        element: <Order />,
+        path: 'orders/:id',
+        loader: ({ params: { id } }: LoaderFunctionArgs) => {
+            if (id && isNaN(+id)) return redirect('/');
+            return null;
+        },
     },
 ];
 

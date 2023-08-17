@@ -10,6 +10,7 @@ const variables = {
     db: {
         uploadUrl: required('REACT_APP_UPLOAD_URL'),
         url: required('REACT_APP_DB_URL'),
+        subscriptionUrl: required('REACT_APP_SUBSCRIPTION_URL'),
     },
 };
 

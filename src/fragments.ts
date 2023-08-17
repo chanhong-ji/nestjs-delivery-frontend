@@ -26,3 +26,46 @@ export const DISH_FRAGMENT = gql`
         }
     }
 `;
+
+export const ORDER_FULL_FRAGMENT = gql`
+    fragment OrderFullFragment on Order {
+        id
+        address
+        createdAt
+        status
+        total
+        customer {
+            id
+            email
+        }
+        restaurant {
+            id
+            name
+        }
+        items {
+            id
+            choices {
+                name
+            }
+            dish {
+                id
+                name
+                price
+            }
+        }
+        driver {
+            id
+            email
+        }
+    }
+`;
+
+export const ORDER_UPDATE_FRAGMENT = gql`
+    fragment OrderUpdateFragment on Order {
+        status
+        driver {
+            id
+            email
+        }
+    }
+`;
