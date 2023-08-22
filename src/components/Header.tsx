@@ -55,12 +55,21 @@ export default function Header({ userId, role }: IProps) {
                     {userId ? (
                         <>
                             {role === UserRole.Owner && (
-                                <Link to='/owner'>
-                                    <h5 className='header-btn mr-5'>Owner</h5>
-                                </Link>
+                                <>
+                                    <Link to='/owner/pending-orders'>
+                                        <h5 className='header-btn mr-5'>
+                                            진행중 주문
+                                        </h5>
+                                    </Link>
+                                    <Link to='/owner'>
+                                        <h5 className='header-btn mr-5'>
+                                            나의 식당
+                                        </h5>
+                                    </Link>
+                                </>
                             )}
                             <Link to='/my-page'>
-                                <h5 className='header-btn mr-5'>My page</h5>
+                                <h5 className='header-btn mr-5'>마이페이지</h5>
                             </Link>
                             <span
                                 onClick={() => {
@@ -69,7 +78,7 @@ export default function Header({ userId, role }: IProps) {
                                 }}
                                 className='header-btn hover:cursor-pointer'
                             >
-                                Logout
+                                로그아웃
                             </span>
                         </>
                     ) : (

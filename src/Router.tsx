@@ -21,6 +21,7 @@ import MyRestaurant from './pages/owner/MyRestaurant';
 import AddDish from './pages/owner/AddDish';
 import MyPage from './pages/MyPage';
 import Order from './components/Order';
+import Dashboard from './components/Dashboard';
 
 const publicRoutes = [
     {
@@ -109,6 +110,9 @@ const router = createBrowserRouter([
                 },
             },
             { element: <Search />, path: 'search' },
+
+            { path: '/dashboard', element: <Dashboard /> },
+
             ...(isLoggedInVar() ? privateRoutes : publicRoutes),
         ],
     },

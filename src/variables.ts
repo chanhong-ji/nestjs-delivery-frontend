@@ -12,6 +12,9 @@ const variables = {
         url: required('REACT_APP_DB_URL'),
         subscriptionUrl: required('REACT_APP_SUBSCRIPTION_URL'),
     },
+    googleMap: {
+        apiKey: required('REACT_APP_GOOGLE_MAP_API', ''),
+    },
 };
 
 export default variables;

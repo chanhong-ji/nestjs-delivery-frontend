@@ -1,4 +1,4 @@
-import { gql, useQuery, useSubscription } from '@apollo/client';
+import { gql, useQuery } from '@apollo/client';
 import { Link, useNavigate, useParams } from 'react-router-dom';
 import RestaurantBanner from '../../components/RestaurantBanner';
 import errorLog from '../../errorLog';
@@ -6,12 +6,8 @@ import { DISH_FRAGMENT, RESTAURANT_FRAGMENT } from '../../fragments';
 import {
     MyRestaurantQuery,
     MyRestaurantQueryVariables,
-    PendingOrdersSubscription,
-    PendingOrdersSubscriptionVariables,
-    UserRole,
 } from '../../gql/graphql';
 import Dish from '../../components/Dish';
-import { useMe } from '../../hooks/useMe';
 
 export const MY_RESTAURANT_QUERY = gql`
     ${RESTAURANT_FRAGMENT}
@@ -30,32 +26,9 @@ export const MY_RESTAURANT_QUERY = gql`
     }
 `;
 
-const PENDING_ORDERS_SUBSCRIPTION = gql`
-    subscription pendingOrders {
-        pendingOrders {
-            id
-            address
-            createdAt
-            total
-            customerId
-            items {
-                id
-                dish {
-                    name
-                    id
-                }
-                choices {
-                    name
-                }
-            }
-        }
-    }
-`;
-
 export default function MyRestaurant() {
     const { id } = useParams() as { id: string };
     const navigate = useNavigate();
-    const { data: meData } = useMe();
     const { data } = useQuery<MyRestaurantQuery, MyRestaurantQueryVariables>(
         MY_RESTAURANT_QUERY,
         {
@@ -80,16 +53,6 @@ export default function MyRestaurant() {
             },
         }
     );
-
-    const { data: pendingOrdersData } = useSubscription<
-        PendingOrdersSubscription,
-        PendingOrdersSubscriptionVariables
-    >(PENDING_ORDERS_SUBSCRIPTION, {
-        skip: !meData?.me || meData.me.role !== UserRole.Owner,
-        onData(data) {
-            console.log(data);
-        },
-    });
 
     return (
         <div>
