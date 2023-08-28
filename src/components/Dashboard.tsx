@@ -74,9 +74,8 @@ export default function Dashboard() {
                     },
                     travelMode: google.maps.TravelMode.TRANSIT,
                 },
-                (result, status) => {
+                (result) => {
                     mapRenderer.setDirections(result);
-                    console.log(status);
                 }
             );
         }

@@ -56,7 +56,7 @@ export default function Header({ userId, role }: IProps) {
                         <>
                             {role === UserRole.Owner && (
                                 <>
-                                    <Link to='/owner/pending-orders'>
+                                    <Link to='/owner/orders'>
                                         <h5 className='header-btn mr-5'>
                                             진행중 주문
                                         </h5>

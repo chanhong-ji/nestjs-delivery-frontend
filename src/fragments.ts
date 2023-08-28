@@ -60,8 +60,33 @@ export const ORDER_FULL_FRAGMENT = gql`
     }
 `;
 
+export const ORDER_PART_FRAGMENT = gql`
+    fragment OrderPartFragment on Order {
+        id
+        address
+        createdAt
+        status
+        total
+        restaurant {
+            id
+            name
+        }
+        items {
+            id
+            choices {
+                name
+            }
+            dish {
+                id
+                name
+            }
+        }
+    }
+`;
+
 export const ORDER_UPDATE_FRAGMENT = gql`
     fragment OrderUpdateFragment on Order {
+        id
         status
         driver {
             id

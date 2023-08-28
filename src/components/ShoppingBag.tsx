@@ -89,9 +89,6 @@ export default function ShoppingBag({
                                         • {choice}
                                     </div>
                                 ))}
-                                {/* {order.choices && order.choices.length > 0 && (
-                                    
-                                )} */}
                                 <div>{dish.price * order.count} 원</div>
                             </div>
                         </div>

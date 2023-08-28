@@ -1,20 +1,15 @@
 import { useEffect } from 'react';
-import { gql, useMutation, useQuery } from '@apollo/client';
+import { gql, useQuery } from '@apollo/client';
 import { useNavigate, useParams } from 'react-router-dom';
-import errorLog from '../errorLog';
-import { ORDER_FULL_FRAGMENT, ORDER_UPDATE_FRAGMENT } from '../fragments';
-import { useMe } from '../hooks/useMe';
 import {
-    EditOrderForOwnerMutation,
-    EditOrderForOwnerMutationVariables,
     OrderQuery,
     OrderQueryVariables,
-    OrderStatus,
-    OrderStatusForOwner,
     OrderUpdatesSubscription,
     OrderUpdatesSubscriptionVariables,
-    UserRole,
 } from '../gql/graphql';
+import errorLog from '../errorLog';
+import { ORDER_FULL_FRAGMENT, ORDER_UPDATE_FRAGMENT } from '../fragments';
+import OrderStatusBlock from './OrderStatusBlock';
 
 const ORDER_UPDATES_SUBSCRIPTION = gql`
     ${ORDER_UPDATE_FRAGMENT}
@@ -38,22 +33,10 @@ const ORDER_QUERY = gql`
     }
 `;
 
-const EDIT_ORDER_FOR_OWNER_MUTATION = gql`
-    mutation editOrderForOwner(
-        $editOrderForOwnerId: Int!
-        $status: OrderStatusForOwner!
-    ) {
-        editOrderForOwner(id: $editOrderForOwnerId, status: $status) {
-            ok
-            error
-        }
-    }
-`;
-
 export default function Order() {
     const { id } = useParams() as { id: string };
     const navigate = useNavigate();
-    const { data: meData } = useMe();
+
     const { data, subscribeToMore } = useQuery<OrderQuery, OrderQueryVariables>(
         ORDER_QUERY,
         {
@@ -81,22 +64,6 @@ export default function Order() {
             },
         }
     );
-
-    const [editOrder, { loading: editOrderLoading }] = useMutation<
-        EditOrderForOwnerMutation,
-        EditOrderForOwnerMutationVariables
-    >(EDIT_ORDER_FOR_OWNER_MUTATION);
-
-    const updateOrder = (status: OrderStatusForOwner) => {
-        if (editOrderLoading) return;
-
-        editOrder({
-            variables: {
-                editOrderForOwnerId: +id,
-                status,
-            },
-        });
-    };
 
     useEffect(() => {
         if (data?.order.result) {
@@ -163,48 +130,11 @@ export default function Order() {
                             {data?.order.result?.driver?.email || 'Not yet.'}
                         </span>
                     </div>
-
-                    {meData?.me.role === UserRole.Client && (
-                        <span className=' text-center mt-5 mb-3  text-2xl text-blue-600'>
-                            Status: {data?.order.result?.status}
-                        </span>
-                    )}
-
-                    {meData?.me.role === UserRole.Owner && (
-                        <>
-                            {data?.order.result?.status ===
-                                OrderStatus.Pending && (
-                                <button
-                                    className='button py-3'
-                                    onClick={() => {
-                                        updateOrder(
-                                            OrderStatusForOwner.Cooking
-                                        );
-                                    }}
-                                >
-                                    Accept Order
-                                </button>
-                            )}
-                            {data?.order.result?.status ===
-                                OrderStatus.Cooking && (
-                                <button
-                                    className='button py-3'
-                                    onClick={() => {
-                                        updateOrder(OrderStatusForOwner.Cooked);
-                                    }}
-                                >
-                                    Order Cooked
-                                </button>
-                            )}
-                            {data?.order.result?.status !==
-                                OrderStatus.Pending &&
-                                data?.order.result?.status !==
-                                    OrderStatus.Cooking && (
-                                    <span className=' text-center mt-5 mb-3  text-2xl text-blue-600'>
-                                        Status: {data?.order.result?.status}
-                                    </span>
-                                )}
-                        </>
+                    {data?.order.result?.status && (
+                        <OrderStatusBlock
+                            id={+id}
+                            status={data.order.result.status}
+                        />
                     )}
                 </div>
             </div>

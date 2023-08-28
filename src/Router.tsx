@@ -22,6 +22,7 @@ import AddDish from './pages/owner/AddDish';
 import MyPage from './pages/MyPage';
 import Order from './components/Order';
 import Dashboard from './components/Dashboard';
+import Orders from './pages/owner/Orders';
 
 const publicRoutes = [
     {
@@ -68,6 +69,10 @@ const privateRoutes = [
                     if (id && isNaN(+id)) return redirect('/');
                     return null;
                 },
+            },
+            {
+                element: <Orders />,
+                path: 'orders',
             },
         ],
     },
