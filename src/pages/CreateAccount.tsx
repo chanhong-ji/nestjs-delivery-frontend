@@ -6,12 +6,15 @@ import { CreateAccountMutation, UserRole } from '../gql/graphql';
 import FormButton from '../components/FormButton';
 import FormError from '../components/FormError';
 import errorLog from '../errorLog';
+import { Postcode } from '../components/Postcode';
 
 interface ICreateAccountForm {
     email: string;
     password: string;
     role: UserRole;
     result: string;
+    address: string;
+    addressDetail?: string;
 }
 
 const CREATE_ACCOUNT_MUTATION = gql`
@@ -19,8 +22,14 @@ const CREATE_ACCOUNT_MUTATION = gql`
         $email: String!
         $password: String!
         $role: UserRole!
+        $address: String!
     ) {
-        createAccount(email: $email, password: $password, role: $role) {
+        createAccount(
+            email: $email
+            password: $password
+            role: $role
+            address: $address
+        ) {
             error
             ok
         }
@@ -34,6 +43,7 @@ export default function CreateAccount() {
         getValues,
         clearErrors,
         setError,
+        setValue,
         formState: { errors, isValid },
     } = useForm<ICreateAccountForm>({
         mode: 'onChange',
@@ -67,8 +77,16 @@ export default function CreateAccount() {
 
     const onValid = () => {
         if (loading) return;
-        const { email, password, role } = getValues();
-        createAccountMutation({ variables: { email, password, role } });
+        const { email, password, role, address, addressDetail } = getValues();
+
+        createAccountMutation({
+            variables: {
+                email,
+                password,
+                role,
+                address: [address, addressDetail].join(' '),
+            },
+        });
     };
 
     const clearResultError = () => {
@@ -128,6 +146,33 @@ export default function CreateAccount() {
                         placeholder='Password'
                         minLength={4}
                         maxLength={16}
+                        required
+                    />
+
+                    <div>
+                        <label htmlFor='address'>주소 </label>
+                        <Postcode
+                            onComplete={(address) => {
+                                setValue('address', address);
+                            }}
+                        />
+                    </div>
+
+                    <input
+                        id='address'
+                        {...register('address', {
+                            required: true,
+                            onChange: clearResultError,
+                        })}
+                        className='auth-input'
+                        placeholder='Address'
+                        required
+                        disabled={true}
+                    />
+                    <input
+                        {...register('addressDetail')}
+                        className='auth-input'
+                        placeholder='AddressDetail'
                         required
                     />
 

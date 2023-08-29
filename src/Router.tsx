@@ -22,7 +22,8 @@ import AddDish from './pages/owner/AddDish';
 import MyPage from './pages/MyPage';
 import Order from './components/Order';
 import Dashboard from './components/Dashboard';
-import Orders from './pages/owner/Orders';
+import OrdersForOwner from './pages/owner/OrdersForOwner';
+import OrdersForClient from './pages/OrdersForClient';
 
 const publicRoutes = [
     {
@@ -46,6 +47,7 @@ const privateRoutes = [
         path: 'my-page/create-restaurant',
     },
     { element: <ConfirmCode />, path: 'confirm-code' },
+    { element: <OrdersForClient />, path: 'orders' },
     {
         element: <Owner />,
         path: 'owner',
@@ -71,7 +73,7 @@ const privateRoutes = [
                 },
             },
             {
-                element: <Orders />,
+                element: <OrdersForOwner />,
                 path: 'orders',
             },
         ],

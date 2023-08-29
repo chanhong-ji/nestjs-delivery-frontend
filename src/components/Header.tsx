@@ -28,7 +28,7 @@ export default function Header({ userId, role }: IProps) {
         <header className='w-full py-1 xl:py-4 px-2 xl:px-6 shadow-md'>
             <div className='w-full flex justify-between items-center'>
                 <h2 className='text-3xl font-semibold'>
-                    <Link to='/'>Delivery Service</Link>
+                    <Link to='/categories/1'>배달의 인류</Link>
                 </h2>
 
                 {/* 검색 창 */}
@@ -54,6 +54,15 @@ export default function Header({ userId, role }: IProps) {
                 <div className='flex items-center'>
                     {userId ? (
                         <>
+                            {role === UserRole.Client && (
+                                <>
+                                    <Link to='/orders'>
+                                        <h5 className='header-btn mr-5'>
+                                            주문내역
+                                        </h5>
+                                    </Link>
+                                </>
+                            )}
                             {role === UserRole.Owner && (
                                 <>
                                     <Link to='/owner/orders'>

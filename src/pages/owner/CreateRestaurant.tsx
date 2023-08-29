@@ -137,9 +137,7 @@ export default function CreateRestaurant() {
                     setUploading(false);
                 },
             });
-        } catch (error) {
-            console.log(error);
-        }
+        } catch (error) {}
     };
 
     const clearResultError = () => {

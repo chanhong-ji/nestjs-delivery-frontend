@@ -9,17 +9,20 @@ import {
     EditProfileMutation,
     EditProfileMutationVariables,
 } from '../gql/graphql';
+import { Postcode } from '../components/Postcode';
 
 type IEditProfileForm = {
     email: string;
     password: string;
     passwordConfirm: string;
+    address: string;
+    addressDetail?: string;
     result?: string;
 };
 
 const EDIT_PROFILE_MUTATION = gql`
-    mutation editProfile($email: String, $password: String) {
-        editProfile(email: $email, password: $password) {
+    mutation editProfile($email: String, $password: String, $address: String) {
+        editProfile(email: $email, password: $password, address: $address) {
             error
             ok
             user {
@@ -41,6 +44,7 @@ export default function EditProfile() {
         getValues,
         clearErrors,
         setError,
+        setValue,
         formState: { errors, isValid },
     } = useForm<IEditProfileForm>({
         mode: 'onChange',
@@ -50,13 +54,16 @@ export default function EditProfile() {
     });
 
     const onValid = () => {
-        const { email, password } = getValues();
-        if ((!email || email === userData?.me.email) && !password) return;
+        const { email, password, address } = getValues();
+
+        if ((!email || email === userData?.me.email) && !password && !address)
+            return;
 
         editProfile({
             variables: {
                 ...(email && userData?.me.email !== email && { email }),
                 ...(password && { password }),
+                ...(address && { address }),
             },
             onCompleted: async ({ editProfile: { ok, error, user } }) => {
                 if (!ok) {
@@ -75,6 +82,8 @@ export default function EditProfile() {
                 }
 
                 await userRefetch();
+
+                window.alert('유저정보가 성공적으로 변경되었습니다.');
             },
             onError: (error) => {
                 errorLog('editProfile', error);
@@ -179,6 +188,28 @@ export default function EditProfile() {
                         className='auth-input'
                         placeholder='Password confirm'
                         maxLength={16}
+                    />
+
+                    <div>
+                        <label htmlFor='address'>주소 </label>
+                        <Postcode
+                            onComplete={(address) => {
+                                setValue('address', address);
+                            }}
+                        />
+                    </div>
+
+                    <input
+                        id='address'
+                        {...register('address')}
+                        className='auth-input'
+                        placeholder='Address'
+                        disabled={true}
+                    />
+                    <input
+                        {...register('addressDetail')}
+                        className='auth-input'
+                        placeholder='AddressDetail'
                     />
 
                     {errors.result?.message && (

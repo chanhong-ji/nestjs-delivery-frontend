@@ -96,6 +96,14 @@ export default function RestaurantPage() {
 
     const onValid = () => {
         if (loading) return;
+        if (!meData) {
+            window.alert('로그인 후에 주문가능합니다.');
+            return;
+        }
+        if (!meData?.me.address) {
+            window.alert('주소지는 필수입니다');
+            return;
+        }
 
         const orders = getValues().order;
         const items = [];
@@ -110,7 +118,7 @@ export default function RestaurantPage() {
         createOrder({
             variables: {
                 restaurantId: +id,
-                address: '임시 주소지',
+                address: meData.me.address,
                 items,
             },
             onCompleted(data) {

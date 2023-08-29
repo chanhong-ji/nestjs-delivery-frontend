@@ -1,6 +1,18 @@
-import { Outlet } from 'react-router-dom';
+import { useEffect } from 'react';
+import { Outlet, useNavigate } from 'react-router-dom';
+import { useMe } from '../../hooks/useMe';
+import { UserRole } from '../../gql/graphql';
 
 export default function Owner() {
+    const { data: meData } = useMe();
+    const navigate = useNavigate();
+
+    useEffect(() => {
+        if (meData?.me.role && meData.me.role !== UserRole.Owner) {
+            return navigate('/', { replace: true });
+        }
+    }, [meData]);
+
     return (
         <div>
             <Outlet />

@@ -109,25 +109,32 @@ export default function Order() {
                     Order #{id}
                 </h4>
                 <h5 className='p-5 pt-10 text-3xl text-center '>
-                    ${data?.order.result?.total}
+                    {data?.order.result?.total} 원
                 </h5>
                 <div className='p-5 text-xl grid gap-6'>
                     <div className='border-t pt-5 border-gray-700'>
-                        Prepared By:{' '}
+                        가게명:{' '}
                         <span className='font-medium'>
                             {data?.order.result?.restaurant?.name}
                         </span>
                     </div>
                     <div className='border-t pt-5 border-gray-700 '>
-                        Deliver To:{' '}
+                        주문자:{' '}
                         <span className='font-medium'>
                             {data?.order.result?.customer?.email}
                         </span>
                     </div>
-                    <div className='border-t border-b py-5 border-gray-700'>
-                        Driver:{' '}
+                    <div className='border-t pt-5 border-gray-700 '>
+                        주소지:{' '}
                         <span className='font-medium'>
-                            {data?.order.result?.driver?.email || 'Not yet.'}
+                            {data?.order.result?.address}
+                        </span>
+                    </div>
+                    <div className='border-t border-b py-5 border-gray-700'>
+                        배달원:{' '}
+                        <span className='font-medium'>
+                            {data?.order.result?.driver?.email ||
+                                '지정되지 않음'}
                         </span>
                     </div>
                     {data?.order.result?.status && (

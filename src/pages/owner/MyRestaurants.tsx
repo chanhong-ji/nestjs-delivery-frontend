@@ -25,8 +25,6 @@ const MY_RESTAURANTS_QUERY = gql`
 `;
 
 export default function MyRestaurants() {
-    const { data: meData } = useMe();
-    const navigate = useNavigate();
     const { loading, data } = useQuery<
         MyRestaurantsQuery,
         MyRestaurantsQueryVariables
@@ -35,12 +33,6 @@ export default function MyRestaurants() {
             errorLog('myRestaurants', error);
         },
     });
-
-    useEffect(() => {
-        if (meData?.me.role && meData.me.role !== UserRole.Owner) {
-            return navigate('/', { replace: true });
-        }
-    }, [meData]);
 
     return (
         <div className='center-box mt-32'>

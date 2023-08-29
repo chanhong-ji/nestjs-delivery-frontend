@@ -10,6 +10,7 @@ import {
 } from '../../gql/graphql';
 import { ORDER_PART_FRAGMENT } from '../../fragments';
 import OrderBlock from '../../components/OrderBlock';
+import { useEffect } from 'react';
 
 type IItem = {
     __typename?: 'OrderItem';
@@ -45,7 +46,7 @@ const PENDING_ORDERS_SUBSCRIPTION = gql`
     }
 `;
 
-const GET_ORDERS = gql`
+export const GET_ORDERS = gql`
     ${ORDER_PART_FRAGMENT}
     query orders($page: Int!, $status: OrderStatus) {
         orders(page: $page, status: $status) {
@@ -60,7 +61,7 @@ const GET_ORDERS = gql`
     }
 `;
 
-export default function Orders() {
+export default function OrdersForOwner() {
     const { data: meData } = useMe();
 
     useSubscription<
@@ -99,10 +100,14 @@ export default function Orders() {
         },
     });
 
-    const { data: ordersData } = useQuery<OrdersQuery, OrdersQueryVariables>(
-        GET_ORDERS,
-        { variables: { page: 1, status: null } }
-    );
+    const { data: ordersData, refetch } = useQuery<
+        OrdersQuery,
+        OrdersQueryVariables
+    >(GET_ORDERS, { variables: { page: 1, status: null } });
+
+    useEffect(() => {
+        refetch();
+    }, []);
 
     return (
         <div className='center-box pt-10'>
@@ -111,6 +116,7 @@ export default function Orders() {
                     idx={(ordersData.orders.result?.length ?? 0) - idx - 1}
                     order={order}
                     key={idx}
+                    statusIncluded={true}
                 />
             ))}
         </div>

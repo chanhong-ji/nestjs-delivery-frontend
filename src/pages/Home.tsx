@@ -24,11 +24,7 @@ export default function Home() {
     const { data: categoriesData } = useQuery<
         SeeCategoriesQuery,
         SeeCategoriesQueryVariables
-    >(SEE_CATEGORIES_QUERY, {
-        onError: (error) => {
-            console.log('seeCategories error: ', error.graphQLErrors[0]);
-        },
-    });
+    >(SEE_CATEGORIES_QUERY);
 
     return (
         <div className='center-box'>

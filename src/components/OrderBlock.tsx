@@ -1,10 +1,11 @@
 import { useNavigate } from 'react-router-dom';
 import OrderStatusBlock from './OrderStatusBlock';
-import { Order } from '../pages/owner/Orders';
+import { Order } from '../pages/owner/OrdersForOwner';
 
 interface IProps {
     idx: number;
     order: Order;
+    statusIncluded: boolean;
 }
 
 export default function OrderBlock(props: IProps) {
@@ -68,11 +69,13 @@ export default function OrderBlock(props: IProps) {
                 </div>
             </div>
 
-            <OrderStatusBlock
-                id={+props.order.id}
-                status={props.order.status}
-                key={props.idx}
-            />
+            {props.statusIncluded && (
+                <OrderStatusBlock
+                    id={+props.order.id}
+                    status={props.order.status}
+                    key={props.idx}
+                />
+            )}
             <div></div>
         </div>
     );
