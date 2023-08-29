@@ -188,6 +188,7 @@ export default function RestaurantPage() {
                                 description={dish.description}
                                 key={idx}
                                 options={dish.dishOptions ?? []}
+                                image={dish.photo}
                                 buttonTitle='추가'
                             />
                         ))}

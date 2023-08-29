@@ -87,6 +87,7 @@ export default function MyRestaurant() {
                         options={[]}
                         buttonTitle='편집'
                         onClickButton={() => {}}
+                        image={dish.photo}
                     />
                 ))}
             </div>

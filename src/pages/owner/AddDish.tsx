@@ -9,6 +9,7 @@ import { useForm, useFieldArray } from 'react-hook-form';
 import FormError from '../../components/FormError';
 import FormButton from '../../components/FormButton';
 import { MY_RESTAURANT_QUERY } from './MyRestaurant';
+import variables from '../../variables';
 
 const CREATE_DISH_MUTATION = gql`
     mutation createDish(
@@ -77,36 +78,48 @@ export default function AddDish() {
         clearErrors('result');
     };
 
-    const onValid = () => {
+    const onValid = async () => {
         if (uploading) return;
 
         setUploading(true);
 
-        const { name, price, photo, description, dishOptions } = getValues();
+        try {
+            const { name, price, photo, description, dishOptions } =
+                getValues();
 
-        createDish({
-            variables: {
-                name,
-                price: +price,
-                restaurantId: +restaurantId,
-                description,
-                photo: '',
-                dishOptions: dishOptions.map(({ extra, name }) => ({
+            const fileData = photo[0];
+            const formBody = new FormData();
+            formBody.append('file', fileData);
+
+            const { file } = await fetch(variables.db.uploadUrl, {
+                method: 'POST',
+                body: formBody,
+            }).then((result) => result.json());
+
+            createDish({
+                variables: {
                     name,
-                    extra: +extra,
-                })),
-            },
-            refetchQueries: [
-                {
-                    query: MY_RESTAURANT_QUERY,
-                    variables: { myRestaurantId: +restaurantId },
+                    price: +price,
+                    restaurantId: +restaurantId,
+                    description,
+                    photo: file,
+                    dishOptions: dishOptions.map(({ extra, name }) => ({
+                        name,
+                        extra: +extra,
+                    })),
                 },
-            ],
-            onCompleted(data) {
-                setUploading(false);
-                navigate(`/owner/restaurants/${restaurantId}`);
-            },
-        });
+                refetchQueries: [
+                    {
+                        query: MY_RESTAURANT_QUERY,
+                        variables: { myRestaurantId: +restaurantId },
+                    },
+                ],
+                onCompleted(data) {
+                    setUploading(false);
+                    navigate(`/owner/restaurants/${restaurantId}`);
+                },
+            });
+        } catch (error) {}
     };
 
     return (
@@ -183,9 +196,10 @@ export default function AddDish() {
                             required: '사진은 필수 항목입니다.',
                             onChange: clearResultError,
                         })}
+                        type='file'
+                        accept='image/jpeg, image/png'
                         className='auth-input'
                         required
-                        type='file'
                     />
 
                     <div>
