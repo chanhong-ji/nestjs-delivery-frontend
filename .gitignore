@@ -153,8 +153,6 @@ dist
 .yarn/install-state.gz
 .pnp.*
 
-# styles
-src/styles
 # Logs
 logs
 *.log

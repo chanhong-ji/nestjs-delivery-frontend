@@ -1,0 +1,27 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+.auth-input {
+    @apply bg-gray-200 shadow-inner focus:ring-2 focus:ring-green-600 focus:ring-opacity-90 focus:outline-none py-3 px-5 rounded-lg;
+}
+
+.auth-btn {
+    @apply py-3 px-5 text-lg rounded-lg focus:outline-none text-white;
+}
+
+.header-btn {
+    @apply font-semibold;
+}
+
+.center-box {
+    @apply w-full flex flex-col items-center;
+}
+
+.button {
+    @apply bg-slate-400 rounded-sm text-white hover:bg-blue-900 p-3 w-fit hover:cursor-pointer;
+}
+
+.menu-btn {
+    @apply bg-white max-w-lg w-full rounded-lg p-3 mt-10 font-semibold text-lg text-gray-700 shadow-xl;
+}
