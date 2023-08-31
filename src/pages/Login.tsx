@@ -44,14 +44,14 @@ export default function Login() {
                 switch (error) {
                     case 'Not Found':
                         setError('result', {
-                            type: 'validate',
+                            type: 'result',
                             message: '사용자를 찾을 수 없습니다',
                         });
                         break;
 
-                    case 'Passwasord Wrong':
+                    case 'Password Wrong':
                         setError('result', {
-                            type: 'validate',
+                            type: 'result',
                             message: '잘못된 비밀번호 입니다',
                         });
                         break;
