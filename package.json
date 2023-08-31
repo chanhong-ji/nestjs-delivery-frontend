@@ -33,7 +33,7 @@
         "tail:build": "cross-env NODE_ENV=production npx tailwindcss -i ./src/styles/tailwind.css -o ./src/styles/styles.css",
         "codegen": "graphql-codegen --config codegen.ts",
         "start": "react-scripts start",
-        "build": "CI=false react-scripts build",
+        "build": "react-scripts build",
         "prebuild": "npm run tail:build",
         "test": "react-scripts test",
         "eject": "react-scripts eject"
