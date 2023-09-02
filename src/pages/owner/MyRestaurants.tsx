@@ -41,12 +41,11 @@ export default function MyRestaurants() {
             {data?.myRestaurants.result &&
             data.myRestaurants.result.length === 0 ? (
                 <>
-                    <h4 className='text-xl mb-5'>You have no restaurants.</h4>
                     <Link
                         className='text-blue-600 hover:underline'
                         to='create-restaurant'
                     >
-                        Create one &rarr;
+                        식당 생성하기 &rarr;
                     </Link>
                 </>
             ) : (

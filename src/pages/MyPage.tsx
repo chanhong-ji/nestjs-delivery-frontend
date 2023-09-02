@@ -21,7 +21,7 @@ export default function MyPage() {
             {meData?.me.role === 'Owner' && (
                 <button
                     className='menu-btn'
-                    onClick={() => navigate('create-restaurant')}
+                    onClick={() => navigate('/owner/create-restaurant')}
                 >
                     식당 생성하기
                 </button>

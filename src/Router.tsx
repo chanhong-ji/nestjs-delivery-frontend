@@ -42,10 +42,6 @@ const privateRoutes = [
         path: 'my-page',
     },
     { element: <EditProfile />, path: 'my-page/edit-profile' },
-    {
-        element: <CreateRestaurant />,
-        path: 'my-page/create-restaurant',
-    },
     { element: <ConfirmCode />, path: 'confirm-code' },
     { element: <OrdersForClient />, path: 'orders' },
     {
@@ -75,6 +71,10 @@ const privateRoutes = [
             {
                 element: <OrdersForOwner />,
                 path: 'orders',
+            },
+            {
+                element: <CreateRestaurant />,
+                path: 'create-restaurant',
             },
         ],
     },

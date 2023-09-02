@@ -166,14 +166,13 @@ export default function CreateAccount() {
                         })}
                         className='auth-input'
                         placeholder='Address'
-                        required
                         disabled={true}
+                        required
                     />
                     <input
                         {...register('addressDetail')}
                         className='auth-input'
                         placeholder='AddressDetail'
-                        required
                     />
 
                     <label htmlFor='role'>역할</label>

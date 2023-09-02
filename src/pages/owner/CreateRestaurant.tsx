@@ -12,6 +12,7 @@ import {
     SeeCategoriesQuery,
     SeeCategoriesQueryVariables,
 } from '../../gql/graphql';
+import { Postcode } from '../../components/Postcode';
 
 const SEE_CATEGORIES_QUERY = gql`
     query seeCategories {
@@ -50,6 +51,7 @@ const CREATE_RESTAURANT = gql`
 interface ICreateRestaurant {
     name: string;
     address: string;
+    addressDetail?: string;
     categoryId: number;
     coverImage: FileList;
     result?: string;
@@ -72,6 +74,7 @@ export default function CreateRestaurant() {
         getValues,
         clearErrors,
         setError,
+        setValue,
         formState: { errors, isValid },
     } = useForm<ICreateRestaurant>({
         mode: 'onChange',
@@ -177,13 +180,12 @@ export default function CreateRestaurant() {
                     />
 
                     <div>
-                        <label htmlFor='address'>주소</label>
-                        {errors.address?.message && (
-                            <FormError
-                                message={errors.address.message}
-                                className='text-xs ml-4'
-                            />
-                        )}
+                        <label htmlFor='address'>주소 </label>
+                        <Postcode
+                            onComplete={(address) => {
+                                setValue('address', address);
+                            }}
+                        />
                     </div>
                     <input
                         id='address'
@@ -193,8 +195,13 @@ export default function CreateRestaurant() {
                         })}
                         className='auth-input'
                         placeholder='Address'
+                        disabled={true}
                         required
-                        maxLength={200}
+                    />
+                    <input
+                        {...register('addressDetail')}
+                        className='auth-input'
+                        placeholder='AddressDetail'
                     />
 
                     <div>
