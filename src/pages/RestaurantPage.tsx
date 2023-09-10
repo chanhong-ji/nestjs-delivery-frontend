@@ -36,11 +36,13 @@ const CREATE_ORDER_MUTATION = gql`
         $restaurantId: Int!
         $items: [createOrderItemInput!]!
         $address: String!
+        $dongCode: String
     ) {
         createOrder(
             restaurantId: $restaurantId
             items: $items
             address: $address
+            dongCode: $dongCode
         ) {
             error
             ok
@@ -119,6 +121,7 @@ export default function RestaurantPage() {
             variables: {
                 restaurantId: +id,
                 address: meData.me.address,
+                dongCode: meData.me.dongCode,
                 items,
             },
             onCompleted(data) {

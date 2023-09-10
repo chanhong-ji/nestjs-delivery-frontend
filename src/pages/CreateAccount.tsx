@@ -15,6 +15,7 @@ interface ICreateAccountForm {
     result: string;
     address: string;
     addressDetail?: string;
+    dongCode: string;
 }
 
 const CREATE_ACCOUNT_MUTATION = gql`
@@ -23,12 +24,14 @@ const CREATE_ACCOUNT_MUTATION = gql`
         $password: String!
         $role: UserRole!
         $address: String!
+        $dongCode: String
     ) {
         createAccount(
             email: $email
             password: $password
             role: $role
             address: $address
+            dongCode: $dongCode
         ) {
             error
             ok
@@ -77,7 +80,8 @@ export default function CreateAccount() {
 
     const onValid = () => {
         if (loading) return;
-        const { email, password, role, address, addressDetail } = getValues();
+        const { email, password, role, address, addressDetail, dongCode } =
+            getValues();
 
         createAccountMutation({
             variables: {
@@ -85,6 +89,7 @@ export default function CreateAccount() {
                 password,
                 role,
                 address: [address, addressDetail].join(' '),
+                dongCode,
             },
         });
     };
@@ -152,8 +157,9 @@ export default function CreateAccount() {
                     <div>
                         <label htmlFor='address'>주소 </label>
                         <Postcode
-                            onComplete={(address) => {
+                            onComplete={(address, dongCode) => {
                                 setValue('address', address);
+                                setValue('dongCode', dongCode);
                             }}
                         />
                     </div>

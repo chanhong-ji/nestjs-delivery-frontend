@@ -34,12 +34,14 @@ const CREATE_RESTAURANT = gql`
         $address: String!
         $categoryId: Int!
         $coverImage: String
+        $dongCode: String
     ) {
         createRestaurant(
             name: $name
             address: $address
             categoryId: $categoryId
             coverImage: $coverImage
+            dongCode: $dongCode
         ) {
             ok
             error
@@ -55,6 +57,7 @@ interface ICreateRestaurant {
     categoryId: number;
     coverImage: FileList;
     result?: string;
+    dongCode: string;
 }
 
 export default function CreateRestaurant() {
@@ -93,7 +96,8 @@ export default function CreateRestaurant() {
         setUploading(true);
 
         try {
-            const { name, address, categoryId, coverImage } = getValues();
+            const { name, address, categoryId, coverImage, dongCode } =
+                getValues();
             const fileData = coverImage[0];
             const formBody = new FormData();
             formBody.append('file', fileData);
@@ -107,6 +111,7 @@ export default function CreateRestaurant() {
                 variables: {
                     name,
                     address,
+                    dongCode,
                     categoryId: +categoryId,
                     coverImage: file,
                 },
@@ -182,8 +187,9 @@ export default function CreateRestaurant() {
                     <div>
                         <label htmlFor='address'>주소 </label>
                         <Postcode
-                            onComplete={(address) => {
+                            onComplete={(address, dongCode) => {
                                 setValue('address', address);
+                                setValue('dongCode', dongCode);
                             }}
                         />
                     </div>

@@ -1,7 +1,7 @@
 import { useDaumPostcodePopup } from 'react-daum-postcode';
 
 interface IPostcodeProps {
-    onComplete: (address: string) => void;
+    onComplete: (address: string, dongCode: string) => void;
 }
 
 export const Postcode = (props: IPostcodeProps) => {
@@ -24,7 +24,7 @@ export const Postcode = (props: IPostcodeProps) => {
             fullAddress += extraAddress !== '' ? ` (${extraAddress})` : '';
         }
 
-        props.onComplete(fullAddress);
+        props.onComplete(fullAddress, data.bcode);
     };
 
     const handleClick = () => {

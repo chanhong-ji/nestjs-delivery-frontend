@@ -18,11 +18,22 @@ type IEditProfileForm = {
     address: string;
     addressDetail?: string;
     result?: string;
+    dongCode: string;
 };
 
 const EDIT_PROFILE_MUTATION = gql`
-    mutation editProfile($email: String, $password: String, $address: String) {
-        editProfile(email: $email, password: $password, address: $address) {
+    mutation editProfile(
+        $email: String
+        $password: String
+        $address: String
+        $dongCode: String
+    ) {
+        editProfile(
+            email: $email
+            password: $password
+            address: $address
+            dongCode: $dongCode
+        ) {
             error
             ok
             user {
@@ -54,7 +65,7 @@ export default function EditProfile() {
     });
 
     const onValid = () => {
-        const { email, password, address } = getValues();
+        const { email, password, address, dongCode } = getValues();
 
         if ((!email || email === userData?.me.email) && !password && !address)
             return;
@@ -63,7 +74,7 @@ export default function EditProfile() {
             variables: {
                 ...(email && userData?.me.email !== email && { email }),
                 ...(password && { password }),
-                ...(address && { address }),
+                ...(address && { address, dongCode }),
             },
             onCompleted: async ({ editProfile: { ok, error, user } }) => {
                 if (!ok) {
@@ -193,8 +204,9 @@ export default function EditProfile() {
                     <div>
                         <label htmlFor='address'>주소 </label>
                         <Postcode
-                            onComplete={(address) => {
+                            onComplete={(address, dongCode) => {
                                 setValue('address', address);
+                                setValue('dongCode', dongCode);
                             }}
                         />
                     </div>
