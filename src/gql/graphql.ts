@@ -81,6 +81,12 @@ export type CreateRestaurantOutput = {
     restaurantId: Scalars['Int']['output'];
 };
 
+export type DeleteAccountOutput = {
+    __typename?: 'DeleteAccountOutput';
+    error?: Maybe<Scalars['String']['output']>;
+    ok: Scalars['Boolean']['output'];
+};
+
 export type DeleteDishOutput = {
     __typename?: 'DeleteDishOutput';
     error?: Maybe<Scalars['String']['output']>;
@@ -111,6 +117,13 @@ export type DishOption = {
     __typename?: 'DishOption';
     extra: Scalars['Int']['output'];
     name: Scalars['String']['output'];
+};
+
+export type DishOutput = {
+    __typename?: 'DishOutput';
+    error?: Maybe<Scalars['String']['output']>;
+    ok: Scalars['Boolean']['output'];
+    result?: Maybe<Dish>;
 };
 
 export type EditDishOutput = {
@@ -159,6 +172,7 @@ export type Mutation = {
     createDish: CreateDishOutput;
     createOrder: CreateOrderOutput;
     createRestaurant: CreateRestaurantOutput;
+    deleteAccount: DeleteAccountOutput;
     deleteDish: DeleteDishOutput;
     deleteRestaurant: DeleteRestaurantOutput;
     editDish: EditDishOutput;
@@ -176,6 +190,7 @@ export type MutationCancelOrderArgs = {
 
 export type MutationCreateAccountArgs = {
     address: Scalars['String']['input'];
+    dongCode?: InputMaybe<Scalars['String']['input']>;
     email: Scalars['String']['input'];
     password: Scalars['String']['input'];
     role: UserRole;
@@ -196,6 +211,7 @@ export type MutationCreateDishArgs = {
 
 export type MutationCreateOrderArgs = {
     address: Scalars['String']['input'];
+    dongCode?: InputMaybe<Scalars['String']['input']>;
     items: Array<CreateOrderItemInput>;
     restaurantId: Scalars['Int']['input'];
     total?: InputMaybe<Scalars['Int']['input']>;
@@ -205,7 +221,13 @@ export type MutationCreateRestaurantArgs = {
     address: Scalars['String']['input'];
     categoryId: Scalars['Int']['input'];
     coverImage?: InputMaybe<Scalars['String']['input']>;
+    dongCode?: InputMaybe<Scalars['String']['input']>;
     name: Scalars['String']['input'];
+};
+
+export type MutationDeleteAccountArgs = {
+    email?: InputMaybe<Scalars['String']['input']>;
+    password?: InputMaybe<Scalars['String']['input']>;
 };
 
 export type MutationDeleteDishArgs = {
@@ -237,6 +259,7 @@ export type MutationEditOrderForOwnerArgs = {
 
 export type MutationEditProfileArgs = {
     address?: InputMaybe<Scalars['String']['input']>;
+    dongCode?: InputMaybe<Scalars['String']['input']>;
     email?: InputMaybe<Scalars['String']['input']>;
     password?: InputMaybe<Scalars['String']['input']>;
 };
@@ -245,6 +268,7 @@ export type MutationEditRestaurantArgs = {
     address?: InputMaybe<Scalars['String']['input']>;
     categoryId?: InputMaybe<Scalars['Int']['input']>;
     coverImage?: InputMaybe<Scalars['String']['input']>;
+    dongCode?: InputMaybe<Scalars['String']['input']>;
     name?: InputMaybe<Scalars['String']['input']>;
     restaurantId: Scalars['Int']['input'];
 };
@@ -278,6 +302,7 @@ export type Order = {
     createdAt: Scalars['DateTime']['output'];
     customer?: Maybe<User>;
     customerId: Scalars['Int']['output'];
+    dongCode?: Maybe<Scalars['String']['output']>;
     driver?: Maybe<User>;
     driverId?: Maybe<Scalars['Int']['output']>;
     id: Scalars['Int']['output'];
@@ -347,6 +372,7 @@ export type PublicUser = {
 
 export type Query = {
     __typename?: 'Query';
+    dish: DishOutput;
     me: User;
     myRestaurant: MyRestaurantOutput;
     myRestaurants: MyRestaurantsOutput;
@@ -357,6 +383,10 @@ export type Query = {
     searchRestaurant: SearchRestaurantOutput;
     seeCategories: SeeCategoriesOutput;
     userProfile: UserProfileOutput;
+};
+
+export type QueryDishArgs = {
+    id: Scalars['Int']['input'];
 };
 
 export type QueryMyRestaurantArgs = {
@@ -396,6 +426,7 @@ export type Restaurant = {
     category?: Maybe<Category>;
     coverImage?: Maybe<Scalars['String']['output']>;
     createdAt: Scalars['DateTime']['output'];
+    dongCode?: Maybe<Scalars['String']['output']>;
     id: Scalars['Int']['output'];
     menu: Array<Dish>;
     name: Scalars['String']['output'];
@@ -438,6 +469,7 @@ export type SeeCategoriesOutput = {
 
 export type Subscription = {
     __typename?: 'Subscription';
+    acceptedOrders: Order;
     cookedOrders: Order;
     orderUpdates: Order;
     pendingOrders: Order;
@@ -451,6 +483,7 @@ export type User = {
     __typename?: 'User';
     address: Scalars['String']['output'];
     createdAt: Scalars['DateTime']['output'];
+    dongCode?: Maybe<Scalars['String']['output']>;
     email: Scalars['String']['output'];
     id: Scalars['Int']['output'];
     orders: Array<Order>;
@@ -560,6 +593,20 @@ export type EditOrderForOwnerMutation = {
     };
 };
 
+export type EditOrderForDeliveryMutationVariables = Exact<{
+    editOrderForDeliveryId: Scalars['Int']['input'];
+    status?: InputMaybe<OrderStatusForDelivery>;
+}>;
+
+export type EditOrderForDeliveryMutation = {
+    __typename?: 'Mutation';
+    editOrderForDelivery: {
+        __typename?: 'EditOrderForDeliveryOutput';
+        ok: boolean;
+        error?: string | null;
+    };
+};
+
 export type RestaurantFragmentFragment = {
     __typename?: 'Restaurant';
     id: number;
@@ -641,6 +688,7 @@ export type MeQuery = {
         role: UserRole;
         verified: boolean;
         address: string;
+        dongCode?: string | null;
     };
 };
 
@@ -684,6 +732,7 @@ export type CreateAccountMutationVariables = Exact<{
     password: Scalars['String']['input'];
     role: UserRole;
     address: Scalars['String']['input'];
+    dongCode?: InputMaybe<Scalars['String']['input']>;
 }>;
 
 export type CreateAccountMutation = {
@@ -699,6 +748,7 @@ export type EditProfileMutationVariables = Exact<{
     email?: InputMaybe<Scalars['String']['input']>;
     password?: InputMaybe<Scalars['String']['input']>;
     address?: InputMaybe<Scalars['String']['input']>;
+    dongCode?: InputMaybe<Scalars['String']['input']>;
 }>;
 
 export type EditProfileMutation = {
@@ -785,6 +835,7 @@ export type CreateOrderMutationVariables = Exact<{
     restaurantId: Scalars['Int']['input'];
     items: Array<CreateOrderItemInput> | CreateOrderItemInput;
     address: Scalars['String']['input'];
+    dongCode?: InputMaybe<Scalars['String']['input']>;
 }>;
 
 export type CreateOrderMutation = {
@@ -825,6 +876,48 @@ export type SearchRestaurantQuery = {
     };
 };
 
+export type AcceptedOrdersSubscriptionVariables = Exact<{
+    [key: string]: never;
+}>;
+
+export type AcceptedOrdersSubscription = {
+    __typename?: 'Subscription';
+    acceptedOrders: {
+        __typename?: 'Order';
+        id: number;
+        address: string;
+        createdAt: any;
+        status: OrderStatus;
+        total: number;
+        restaurant?: {
+            __typename?: 'Restaurant';
+            id: number;
+            name: string;
+        } | null;
+        items: Array<{
+            __typename?: 'OrderItem';
+            id: number;
+            choices?: Array<{
+                __typename?: 'OrderItemOption';
+                name: string;
+            }> | null;
+            dish: { __typename?: 'Dish'; id: number; name: string };
+        }>;
+    };
+};
+
+export type CookedOrdersSubscriptionVariables = Exact<{ [key: string]: never }>;
+
+export type CookedOrdersSubscription = {
+    __typename?: 'Subscription';
+    cookedOrders: {
+        __typename?: 'Order';
+        id: number;
+        status: OrderStatus;
+        driver?: { __typename?: 'User'; id: number; email: string } | null;
+    };
+};
+
 export type CreateDishMutationVariables = Exact<{
     name: Scalars['String']['input'];
     price: Scalars['Int']['input'];
@@ -848,6 +941,7 @@ export type CreateRestaurantMutationVariables = Exact<{
     address: Scalars['String']['input'];
     categoryId: Scalars['Int']['input'];
     coverImage?: InputMaybe<Scalars['String']['input']>;
+    dongCode?: InputMaybe<Scalars['String']['input']>;
 }>;
 
 export type CreateRestaurantMutation = {
@@ -1728,6 +1822,89 @@ export const EditOrderForOwnerDocument = {
     EditOrderForOwnerMutation,
     EditOrderForOwnerMutationVariables
 >;
+export const EditOrderForDeliveryDocument = {
+    kind: 'Document',
+    definitions: [
+        {
+            kind: 'OperationDefinition',
+            operation: 'mutation',
+            name: { kind: 'Name', value: 'editOrderForDelivery' },
+            variableDefinitions: [
+                {
+                    kind: 'VariableDefinition',
+                    variable: {
+                        kind: 'Variable',
+                        name: { kind: 'Name', value: 'editOrderForDeliveryId' },
+                    },
+                    type: {
+                        kind: 'NonNullType',
+                        type: {
+                            kind: 'NamedType',
+                            name: { kind: 'Name', value: 'Int' },
+                        },
+                    },
+                },
+                {
+                    kind: 'VariableDefinition',
+                    variable: {
+                        kind: 'Variable',
+                        name: { kind: 'Name', value: 'status' },
+                    },
+                    type: {
+                        kind: 'NamedType',
+                        name: { kind: 'Name', value: 'OrderStatusForDelivery' },
+                    },
+                },
+            ],
+            selectionSet: {
+                kind: 'SelectionSet',
+                selections: [
+                    {
+                        kind: 'Field',
+                        name: { kind: 'Name', value: 'editOrderForDelivery' },
+                        arguments: [
+                            {
+                                kind: 'Argument',
+                                name: { kind: 'Name', value: 'id' },
+                                value: {
+                                    kind: 'Variable',
+                                    name: {
+                                        kind: 'Name',
+                                        value: 'editOrderForDeliveryId',
+                                    },
+                                },
+                            },
+                            {
+                                kind: 'Argument',
+                                name: { kind: 'Name', value: 'status' },
+                                value: {
+                                    kind: 'Variable',
+                                    name: { kind: 'Name', value: 'status' },
+                                },
+                            },
+                        ],
+                        selectionSet: {
+                            kind: 'SelectionSet',
+                            selections: [
+                                {
+                                    kind: 'Field',
+                                    name: { kind: 'Name', value: 'ok' },
+                                },
+                                {
+                                    kind: 'Field',
+                                    name: { kind: 'Name', value: 'error' },
+                                },
+                            ],
+                        },
+                    },
+                ],
+            },
+        },
+    ],
+} as unknown as DocumentNode<
+    EditOrderForDeliveryMutation,
+    EditOrderForDeliveryMutationVariables
+>;
 export const MeDocument = {
     kind: 'Document',
     definitions: [
@@ -1763,6 +1940,10 @@ export const MeDocument = {
                                 {
                                     kind: 'Field',
                                     name: { kind: 'Name', value: 'address' },
+                                },
+                                {
+                                    kind: 'Field',
+                                    name: { kind: 'Name', value: 'dongCode' },
                                 },
                             ],
                         },
@@ -2015,6 +2196,17 @@ export const CreateAccountDocument = {
                         },
                     },
                 },
+                {
+                    kind: 'VariableDefinition',
+                    variable: {
+                        kind: 'Variable',
+                        name: { kind: 'Name', value: 'dongCode' },
+                    },
+                    type: {
+                        kind: 'NamedType',
+                        name: { kind: 'Name', value: 'String' },
+                    },
+                },
             ],
             selectionSet: {
                 kind: 'SelectionSet',
@@ -2053,6 +2245,14 @@ export const CreateAccountDocument = {
                                 value: {
                                     kind: 'Variable',
                                     name: { kind: 'Name', value: 'address' },
+                                },
+                            },
+                            {
+                                kind: 'Argument',
+                                name: { kind: 'Name', value: 'dongCode' },
+                                value: {
+                                    kind: 'Variable',
+                                    name: { kind: 'Name', value: 'dongCode' },
                                 },
                             },
                         ],
@@ -2119,6 +2319,17 @@ export const EditProfileDocument = {
                         name: { kind: 'Name', value: 'String' },
                     },
                 },
+                {
+                    kind: 'VariableDefinition',
+                    variable: {
+                        kind: 'Variable',
+                        name: { kind: 'Name', value: 'dongCode' },
+                    },
+                    type: {
+                        kind: 'NamedType',
+                        name: { kind: 'Name', value: 'String' },
+                    },
+                },
             ],
             selectionSet: {
                 kind: 'SelectionSet',
@@ -2149,6 +2360,14 @@ export const EditProfileDocument = {
                                 value: {
                                     kind: 'Variable',
                                     name: { kind: 'Name', value: 'address' },
+                                },
+                            },
+                            {
+                                kind: 'Argument',
+                                name: { kind: 'Name', value: 'dongCode' },
+                                value: {
+                                    kind: 'Variable',
+                                    name: { kind: 'Name', value: 'dongCode' },
                                 },
                             },
                         ],
@@ -2563,6 +2782,17 @@ export const CreateOrderDocument = {
                         },
                     },
                 },
+                {
+                    kind: 'VariableDefinition',
+                    variable: {
+                        kind: 'Variable',
+                        name: { kind: 'Name', value: 'dongCode' },
+                    },
+                    type: {
+                        kind: 'NamedType',
+                        name: { kind: 'Name', value: 'String' },
+                    },
+                },
             ],
             selectionSet: {
                 kind: 'SelectionSet',
@@ -2596,6 +2826,14 @@ export const CreateOrderDocument = {
                                 value: {
                                     kind: 'Variable',
                                     name: { kind: 'Name', value: 'address' },
+                                },
+                            },
+                            {
+                                kind: 'Argument',
+                                name: { kind: 'Name', value: 'dongCode' },
+                                value: {
+                                    kind: 'Variable',
+                                    name: { kind: 'Name', value: 'dongCode' },
                                 },
                             },
                         ],
@@ -2765,6 +3003,196 @@ export const SearchRestaurantDocument = {
 } as unknown as DocumentNode<
     SearchRestaurantQuery,
     SearchRestaurantQueryVariables
+>;
+export const AcceptedOrdersDocument = {
+    kind: 'Document',
+    definitions: [
+        {
+            kind: 'OperationDefinition',
+            operation: 'subscription',
+            name: { kind: 'Name', value: 'acceptedOrders' },
+            selectionSet: {
+                kind: 'SelectionSet',
+                selections: [
+                    {
+                        kind: 'Field',
+                        name: { kind: 'Name', value: 'acceptedOrders' },
+                        selectionSet: {
+                            kind: 'SelectionSet',
+                            selections: [
+                                {
+                                    kind: 'FragmentSpread',
+                                    name: {
+                                        kind: 'Name',
+                                        value: 'OrderPartFragment',
+                                    },
+                                },
+                            ],
+                        },
+                    },
+                ],
+            },
+        },
+        {
+            kind: 'FragmentDefinition',
+            name: { kind: 'Name', value: 'OrderPartFragment' },
+            typeCondition: {
+                kind: 'NamedType',
+                name: { kind: 'Name', value: 'Order' },
+            },
+            selectionSet: {
+                kind: 'SelectionSet',
+                selections: [
+                    { kind: 'Field', name: { kind: 'Name', value: 'id' } },
+                    { kind: 'Field', name: { kind: 'Name', value: 'address' } },
+                    {
+                        kind: 'Field',
+                        name: { kind: 'Name', value: 'createdAt' },
+                    },
+                    { kind: 'Field', name: { kind: 'Name', value: 'status' } },
+                    { kind: 'Field', name: { kind: 'Name', value: 'total' } },
+                    {
+                        kind: 'Field',
+                        name: { kind: 'Name', value: 'restaurant' },
+                        selectionSet: {
+                            kind: 'SelectionSet',
+                            selections: [
+                                {
+                                    kind: 'Field',
+                                    name: { kind: 'Name', value: 'id' },
+                                },
+                                {
+                                    kind: 'Field',
+                                    name: { kind: 'Name', value: 'name' },
+                                },
+                            ],
+                        },
+                    },
+                    {
+                        kind: 'Field',
+                        name: { kind: 'Name', value: 'items' },
+                        selectionSet: {
+                            kind: 'SelectionSet',
+                            selections: [
+                                {
+                                    kind: 'Field',
+                                    name: { kind: 'Name', value: 'id' },
+                                },
+                                {
+                                    kind: 'Field',
+                                    name: { kind: 'Name', value: 'choices' },
+                                    selectionSet: {
+                                        kind: 'SelectionSet',
+                                        selections: [
+                                            {
+                                                kind: 'Field',
+                                                name: {
+                                                    kind: 'Name',
+                                                    value: 'name',
+                                                },
+                                            },
+                                        ],
+                                    },
+                                },
+                                {
+                                    kind: 'Field',
+                                    name: { kind: 'Name', value: 'dish' },
+                                    selectionSet: {
+                                        kind: 'SelectionSet',
+                                        selections: [
+                                            {
+                                                kind: 'Field',
+                                                name: {
+                                                    kind: 'Name',
+                                                    value: 'id',
+                                                },
+                                            },
+                                            {
+                                                kind: 'Field',
+                                                name: {
+                                                    kind: 'Name',
+                                                    value: 'name',
+                                                },
+                                            },
+                                        ],
+                                    },
+                                },
+                            ],
+                        },
+                    },
+                ],
+            },
+        },
+    ],
+} as unknown as DocumentNode<
+    AcceptedOrdersSubscription,
+    AcceptedOrdersSubscriptionVariables
+>;
+export const CookedOrdersDocument = {
+    kind: 'Document',
+    definitions: [
+        {
+            kind: 'OperationDefinition',
+            operation: 'subscription',
+            name: { kind: 'Name', value: 'cookedOrders' },
+            selectionSet: {
+                kind: 'SelectionSet',
+                selections: [
+                    {
+                        kind: 'Field',
+                        name: { kind: 'Name', value: 'cookedOrders' },
+                        selectionSet: {
+                            kind: 'SelectionSet',
+                            selections: [
+                                {
+                                    kind: 'FragmentSpread',
+                                    name: {
+                                        kind: 'Name',
+                                        value: 'OrderUpdateFragment',
+                                    },
+                                },
+                            ],
+                        },
+                    },
+                ],
+            },
+        },
+        {
+            kind: 'FragmentDefinition',
+            name: { kind: 'Name', value: 'OrderUpdateFragment' },
+            typeCondition: {
+                kind: 'NamedType',
+                name: { kind: 'Name', value: 'Order' },
+            },
+            selectionSet: {
+                kind: 'SelectionSet',
+                selections: [
+                    { kind: 'Field', name: { kind: 'Name', value: 'id' } },
+                    { kind: 'Field', name: { kind: 'Name', value: 'status' } },
+                    {
+                        kind: 'Field',
+                        name: { kind: 'Name', value: 'driver' },
+                        selectionSet: {
+                            kind: 'SelectionSet',
+                            selections: [
+                                {
+                                    kind: 'Field',
+                                    name: { kind: 'Name', value: 'id' },
+                                },
+                                {
+                                    kind: 'Field',
+                                    name: { kind: 'Name', value: 'email' },
+                                },
+                            ],
+                        },
+                    },
+                ],
+            },
+        },
+    ],
+} as unknown as DocumentNode<
+    CookedOrdersSubscription,
+    CookedOrdersSubscriptionVariables
 >;
 export const CreateDishDocument = {
     kind: 'Document',
@@ -3004,6 +3432,17 @@ export const CreateRestaurantDocument = {
                         name: { kind: 'Name', value: 'String' },
                     },
                 },
+                {
+                    kind: 'VariableDefinition',
+                    variable: {
+                        kind: 'Variable',
+                        name: { kind: 'Name', value: 'dongCode' },
+                    },
+                    type: {
+                        kind: 'NamedType',
+                        name: { kind: 'Name', value: 'String' },
+                    },
+                },
             ],
             selectionSet: {
                 kind: 'SelectionSet',
@@ -3042,6 +3481,14 @@ export const CreateRestaurantDocument = {
                                 value: {
                                     kind: 'Variable',
                                     name: { kind: 'Name', value: 'coverImage' },
+                                },
+                            },
+                            {
+                                kind: 'Argument',
+                                name: { kind: 'Name', value: 'dongCode' },
+                                value: {
+                                    kind: 'Variable',
+                                    name: { kind: 'Name', value: 'dongCode' },
                                 },
                             },
                         ],

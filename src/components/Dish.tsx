@@ -1,4 +1,4 @@
-import { useState, useEffect } from 'react';
+import { useState } from 'react';
 import { DishOption } from '../gql/graphql';
 import DishOptionCompo from './DishOption';
 
