@@ -24,6 +24,8 @@ import Order from './components/Order';
 import Dashboard from './components/Dashboard';
 import OrdersForOwner from './pages/owner/OrdersForOwner';
 import OrdersForClient from './pages/OrdersForClient';
+import Delivery from './pages/delivery/Delivery';
+import OrdersForDelivery from './pages/delivery/OrdersForDelivery';
 
 const publicRoutes = [
     {
@@ -44,6 +46,11 @@ const privateRoutes = [
     { element: <EditProfile />, path: 'my-page/edit-profile' },
     { element: <ConfirmCode />, path: 'confirm-code' },
     { element: <OrdersForClient />, path: 'orders' },
+    {
+        element: <Delivery />,
+        path: 'delivery',
+        children: [{ element: <OrdersForDelivery />, path: 'orders' }],
+    },
     {
         element: <Owner />,
         path: 'owner',

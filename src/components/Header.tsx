@@ -77,6 +77,15 @@ export default function Header({ userId, role }: IProps) {
                                     </Link>
                                 </>
                             )}
+                            {role === UserRole.Delivery && (
+                                <>
+                                    <Link to='/delivery/orders'>
+                                        <h5 className='header-btn mr-5'>
+                                            주문
+                                        </h5>
+                                    </Link>
+                                </>
+                            )}
                             <Link to='/my-page'>
                                 <h5 className='header-btn mr-5'>마이페이지</h5>
                             </Link>

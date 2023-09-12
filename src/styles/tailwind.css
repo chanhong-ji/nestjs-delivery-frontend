@@ -25,3 +25,7 @@
 .menu-btn {
     @apply bg-white max-w-lg w-full rounded-lg p-3 mt-10 font-semibold text-lg text-gray-700 shadow-xl;
 }
+
+.border-bottom-white {
+    @apply border-b-white border-b-2;
+}
